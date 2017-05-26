@@ -1,0 +1,60 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" type="text/css" href="../../static/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../static/css/bootflat.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../static/css/site.css" />
+</head>
+
+<body>
+<div id="nav-container">
+    <nav class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="/">Hostel World</a>
+            </div>
+            <div class="collapse navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <li class>
+                        <a href="/">Hotels</a>
+                    </li>
+                    <li class="active">
+                        <a href="/vip/center">Personal</a>
+                    </li>
+                </ul>
+                <p class="navbar-text navbar-right">
+                    Log in as
+                    <a class="navbar-link" href="/vip/center">alpaca.</a>&nbsp;&nbsp;
+                    <a class="navbar-link" href="/vip/logout">logout</a>
+                </p>
+            </div>
+        </div>
+    </nav>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-3">
+            <div id="vip-center-side-nav-container"></div>
+        </div>
+        <div class="col-md-9">
+            <div id="vip-center-display-panel"></div>
+        </div>
+    </div>
+</div>
+
+
+<div id="order-modal-container"></div>
+<div id="recharge-modal-container"></div>
+</body>
+<script src="../../static/js/lib/jquery-3.1.1.min.js"></script>
+<script src="../../static/js/lib/bootstrap.min.js"></script>
+<script src="../../static/js/bundle.js"></script>
+<script>
+    const R = window.render;
+    R.renderVipCenterSideNav();
+    R.renderVipCenterPersonalInfo();
+    R.renderOrderModal();
+    R.renderRechargeModal();
+</script>
+</html>
