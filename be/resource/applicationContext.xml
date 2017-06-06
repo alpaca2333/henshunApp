@@ -16,7 +16,7 @@
 
     <bean id="dataSource" class="cn.hengshun.model.dataSource.MysqlDataSource">
         <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-        <property name="url" value="jdbc:mysql://localhost:3306/cxx?useSSL=false&amp;useUnicode=true&amp;characterEncoding=UTF-8"/>
+        <property name="url" value="jdbc:mysql://localhost:3306/hengshun?useSSL=false&amp;useUnicode=true&amp;characterEncoding=UTF-8"/>
         <property name="username" value="root"/>
         <property name="password" value="Yakamoz123"/>
         <property name="maxActive" value="256"/>

@@ -66,10 +66,8 @@ public class CommonDao<KeyType, EntityType extends Fetchable<KeyType>>{
     }
 
 
-    Class<EntityType> entityType;
+    private Class<EntityType> entityType;
 
-    @PersistenceUnit
-    protected EntityManagerFactory emf;
     @PersistenceContext(name = "alpacaJPA")
     protected EntityManager em;
 }

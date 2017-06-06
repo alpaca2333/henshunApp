@@ -16,6 +16,12 @@
             <param-value>true</param-value>
         </init-param>
     </filter>
+
+    <error-page>
+        <error-code>404</error-code>
+        <location>/static/page/404.html</location>
+    </error-page>
+
     <filter-mapping>
         <filter-name>encodingFilter</filter-name>
         <url-pattern>/</url-pattern>
