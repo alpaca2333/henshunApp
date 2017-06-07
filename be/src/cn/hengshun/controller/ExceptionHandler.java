@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 @ControllerAdvice
 public class ExceptionHandler {
+
     @org.springframework.web.bind.annotation.ExceptionHandler(Exception.class)
     public String exceptionHandler(HttpServletRequest request, Exception e) {
         return "500.html";

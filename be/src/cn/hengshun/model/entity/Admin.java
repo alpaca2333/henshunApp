@@ -6,13 +6,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 /**
- * Created by alpaca on 17-6-3.
+ * Created by alpaca on 17-6-7.
  */
-@Entity(name = "top_manager")
-public class TopManager implements Fetchable<Integer> {
+@Entity(name = "admin")
+public class Admin implements Fetchable<Integer> {
+
     private Integer id;
 
-    private String name;
+    private String username;
 
     private String password;
 
@@ -26,12 +27,12 @@ public class TopManager implements Fetchable<Integer> {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getUsername() {
+        return username;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {

@@ -3,10 +3,12 @@ package cn.hengshun.model.entity;
 import javax.persistence.*;
 
 /**
+ * 消费记录中，每个订单都会包括多个产品。
+ * 这张表是产品和订单的多对多的关系表。
  * Created by alpaca on 17-5-31.
  */
-@Entity(name = "buying")
-public class Buying implements Fetchable<Integer> {
+@Entity(name = "order_product")
+public class OrderProduct implements Fetchable<Integer> {
     private Integer id;
 
     private Product product;

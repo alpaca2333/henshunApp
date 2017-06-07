@@ -2,6 +2,8 @@ package cn.hengshun.util;
 
 import org.fusesource.jansi.Ansi;
 
+import java.util.Calendar;
+
 import static org.fusesource.jansi.Ansi.Color.*;
 import static org.fusesource.jansi.Ansi.ansi;
 
@@ -27,6 +29,7 @@ public class Log {
     }
 
     private static void print(Ansi.Color color, Object s) {
+        String time = "[" + TimeUtil.getFullTimeString(Calendar.getInstance()) + "] ";
         if (s == null) s = "null";
         System.out.println( ansi().fg(color).a(s.toString()).reset() );
     }

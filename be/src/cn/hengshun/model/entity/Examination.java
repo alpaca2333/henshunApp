@@ -4,6 +4,7 @@ import javax.persistence.*;
 import java.sql.Timestamp;
 
 /**
+ * 体检报告
  * Created by alpaca on 17-5-28.
  */
 @Entity(name = "examination")

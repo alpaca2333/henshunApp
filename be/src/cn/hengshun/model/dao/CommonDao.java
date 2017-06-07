@@ -27,8 +27,7 @@ public class CommonDao<KeyType, EntityType extends Fetchable<KeyType>>{
     }
 
     public EntityType save(EntityType o) {
-        EntityType entity = em.merge(o);
-        if (o.getId() == null) o.setId(entity.getId());
+        em.persist(o);
         return o;
     }
 

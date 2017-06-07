@@ -2,15 +2,42 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link href="../../static/css/bootstrap.min.css" type="text/css">
-    <link href="../../static/css/bootflat.site.min.css" type="text/css">
+    <link href="../../static/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="../../static/css/bootflat.min.css" rel="stylesheet" />
+    <link href="../../static/css/site.css" rel="stylesheet" />
     <title>恒顺用户管理系统</title>
 </head>
-<body>
-<div class="row">
 
+<body>
+<div class="login-panel panel">
+    <div class="login-panel-heading">
+        <img height="60px" src="../../static/img/hengshun-logo.png" />
+        <span id="login-header-label"><b>管理信息系统</b></span>
+    </div>
+    <div class="login-panel-body">
+
+        <div class="form-input-panel" id="username-input" style="margin-top: 25px" >
+            <img src="../../static/img/username_32.png"  width="22px" height="22px" class=" form-inline login-icon"/>
+            <input type="text" height="" width="100px" class="form-inline input-form" placeholder="账号或手机号"/>
+        </div>
+        <div class="form-input-panel" id="password-input">
+            <img src="../../static/img/password_32.png"  width="22px" height="22px" class=" form-inline login-icon"/>
+            <input type="password" width="100px" class="form-inline input-form login-input" placeholder="密码"/>
+        </div>
+        <button id="btn-login">登录</button>
+    </div>
 </div>
 </body>
+<style type="text/css">
+    html {
+        height: 100%;
+    }
+    body {
+        background: url(../../static/img/login-background.jpg) no-repeat;
+        height: 100%;
+        margin: 0;
+    }
+</style>
 <script type="text/javascript" src="../../static/js/lib/jquery-3.1.1.min.js"></script>
 <script type="text/javascript" src="../../static/js/lib/bootstrap.min.js"></script>
 </html>

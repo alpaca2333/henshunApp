@@ -2,6 +2,7 @@ package cn.hengshun.model.entity;
 
 import javax.persistence.*;
 /**
+ * 客户，门店店主
  * Created by alpaca on 17-5-28.
  */
 @Entity(name = "client")
