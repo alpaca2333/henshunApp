@@ -1,7 +1,5 @@
 package cn.hengshun.model.dao;
 
-import cn.hengshun.model.dao.CommonDao;
-import cn.hengshun.model.dao.IBabyDao;
 import cn.hengshun.model.entity.Baby;
 import cn.hengshun.model.entity.Baby_;
 import javafx.scene.Parent;
