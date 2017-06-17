@@ -22,7 +22,7 @@ public class AuthFilter extends HandlerInterceptorAdapter {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        Log.i("Intercepted: [" + request.getRequestURI() + "]");
+        //Log.i("Intercepted: [" + request.getRequestURI() + "]");
         if (urlPatterns == null || urlPatterns.isEmpty()) {
             for (String pattern: excludePatterns) {
                 if (request.getRequestURI().matches(pattern)) {
@@ -38,6 +38,7 @@ public class AuthFilter extends HandlerInterceptorAdapter {
             }
             return true;
         }
+
 
     }
 

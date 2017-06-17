@@ -12,6 +12,7 @@ public class ExceptionHandler {
 
     @org.springframework.web.bind.annotation.ExceptionHandler(Exception.class)
     public String exceptionHandler(HttpServletRequest request, Exception e) {
+        e.printStackTrace();
         return "500.html";
     }
 }

@@ -15,7 +15,11 @@ import java.util.List;
 public class ViewController {
     @RequestMapping("/login")
     public String loginView() throws SQLException {
-        throw new SQLException();
-        // return "login.html";
+        return "login.html";
+    }
+
+    @RequestMapping("/admin")
+    public String adminView() throws SQLException {
+        return "admin.html";
     }
 }

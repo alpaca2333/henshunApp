@@ -6,6 +6,9 @@ import cn.hengshun.model.entity.Client;
 import cn.hengshun.util.SpringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.request.NativeWebRequest;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -16,9 +19,14 @@ import javax.servlet.http.HttpSession;
 @Component
 public class Session {
 
-    @Autowired
-    public Session(HttpServletRequest request) {
-        this.session = request.getSession(true);
+
+    public Session() {
+        RequestAttributes attribs = RequestContextHolder.getRequestAttributes();
+        if (attribs instanceof NativeWebRequest) {
+            HttpServletRequest request = (HttpServletRequest) ((NativeWebRequest) attribs).getNativeRequest();
+            this.session = request.getSession(true);
+        }
+
     }
 
     public void loginAs(ClerkModel clerk) {

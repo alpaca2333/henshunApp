@@ -11,6 +11,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class TestController {
     @RequestMapping("/")
     public @ResponseBody String response() {
-        return "啦啦啦！";
+        return "login.html";
     }
 }
