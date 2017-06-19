@@ -4,6 +4,7 @@ import request from 'superagent';
 export class CustomerListPanel extends React.Component {
     constructor(props) {
         super(props);
+        this.state = this.getInitialState();
     }
 
     static defaultProps = {
@@ -15,8 +16,8 @@ export class CustomerListPanel extends React.Component {
             customers: [
                 {
                     id: 1,
-                    username: 'asd123',
-                    name: '大哥好多年',
+                    register: '2015-01-01',
+                    name: '\u5927\u54e5\u597d\u591a\u5e74',
                     phoneNumber: '15644448888'
                 }
             ]
@@ -25,22 +26,22 @@ export class CustomerListPanel extends React.Component {
 
     render() {
         return (
-            <div id="display-panel">
-                <span id="display-title">我的顾客</span>
-                <div class="input-group input-group-sm" id="search-group">
-                    <span class="input-group-btn">
-                        <button class="btn btn-primary"><span class=" glyphicon glyphicon-search"></span> </button>
+            <div className="display-panel">
+                <div className="display-title">我的顾客</div>
+                <div className="input-group input-group-sm" id="search-group">
+                    <span className="input-group-btn">
+                        <button className="btn btn-primary"><span className=" glyphicon glyphicon-search"/> </button>
                     </span>
-                    <input type="text" class="form-control form-inline" placeholder="姓名/用户名/手机号/编号"/>
+                    <input type="text" className="form-control form-inline" placeholder="姓名/用户名/手机号/编号"/>
                 </div>
-                <table class="table" id="data-table">
+                <table className="table" id="data-table">
                     <thead>
-                    <tr class="table-head">
-                        <td style="width: 10%">编号</td>
-                        <td style="width: 10%">姓名</td>
-                        <td style="width: 10%">用户名</td>
-                        <td style="width: 10%">手机号</td>
-                        <td style="width: 15%">操作</td>
+                    <tr className="table-head">
+                        <td style={{width: '10%'}}>编号</td>
+                        <td style={{width: '10%'}}>姓名</td>
+                        <td style={{width: '10%'}}>注册时间</td>
+                        <td style={{width: '10%'}}>手机号</td>
+                        <td style={{width: '15%'}}>操作</td>
                     </tr>
                     </thead>
                     <tbody>
@@ -50,9 +51,9 @@ export class CustomerListPanel extends React.Component {
                         <td>用户名</td>
                         <td>手机号</td>
                         <td>
-                            <button class="btn btn-link">查看</button>
-                            <button class="btn btn-link">编辑</button>
-                            <button class="btn btn-link">录入消费</button>
+                            <button className="btn btn-link">查看</button>
+                            <button className="btn btn-link">编辑</button>
+                            <button className="btn btn-link">录入消费</button>
                         </td>
                     </tr>
                     <tr>
@@ -61,9 +62,9 @@ export class CustomerListPanel extends React.Component {
                         <td>用户名</td>
                         <td>手机号</td>
                         <td>
-                            <button class="btn btn-link">查看</button>
-                            <button class="btn btn-link">编辑</button>
-                            <button class="btn btn-link">录入消费</button>
+                            <button className="btn btn-link">查看</button>
+                            <button className="btn btn-link">编辑</button>
+                            <button className="btn btn-link">录入消费</button>
                         </td>
                     </tr>
                     <tr>
@@ -72,23 +73,14 @@ export class CustomerListPanel extends React.Component {
                         <td>用户名</td>
                         <td>手机号</td>
                         <td>
-                            <button class="btn btn-link">查看</button>
-                            <button class="btn btn-link">编辑</button>
-                            <button class="btn btn-link">录入消费</button>
+                            <button className="btn btn-link">查看</button>
+                            <button className="btn btn-link">编辑</button>
+                            <button className="btn btn-link">录入消费</button>
                         </td>
                     </tr>
                     </tbody>
                 </table>
             </div>
         )
-    }
-
-    componentDidMount() {
-        request
-            .get('//www.baidu.com')
-            .end((err, res) => {
-                alert(err);
-                alert(res);
-            })
     }
 }

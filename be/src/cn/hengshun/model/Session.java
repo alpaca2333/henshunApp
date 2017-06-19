@@ -5,6 +5,7 @@ import cn.hengshun.model.entity.Clerk;
 import cn.hengshun.model.entity.Client;
 import cn.hengshun.util.SpringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,9 +15,9 @@ import javax.servlet.http.HttpSession;
  * Created by alpaca on 17-6-7.
  */
 @Component
+@Scope("prototype")
 public class Session {
 
-    @Autowired
     public Session(HttpServletRequest request) {
         this.session = request.getSession(true);
     }

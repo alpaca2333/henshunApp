@@ -2,6 +2,7 @@
   "dependencies": {
     "babel-core": "^6.17.0",
     "babel-plugin-transform-class-properties": "^6.16.0",
+    "convert-unicode-loader": "^1.0.2",
     "file-loader": "^0.11.2",
     "highcharts": "^5.0.0",
     "jquery": "^3.1.1",
@@ -9,6 +10,7 @@
     "react-dom": "latest",
     "superagent": "^3.5.2",
     "uglifyjs": "^2.4.10",
+    "unicode-loader": "^1.0.6",
     "webpack": "^2.6.1"
   },
   "devDependencies": {

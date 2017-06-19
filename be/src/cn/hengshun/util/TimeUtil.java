@@ -30,7 +30,7 @@ public class TimeUtil {
     }
 
     public static String getFullTimeString(Calendar time) {
-        return formatter.format(time);
+        return formatter.format(time.getTime());
     }
 
     public static String getShortTimeString(Calendar time) {
