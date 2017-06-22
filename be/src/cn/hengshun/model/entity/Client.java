@@ -1,6 +1,9 @@
 package cn.hengshun.model.entity;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * 客户，门店店主
  * Created by alpaca on 17-5-28.
@@ -14,6 +17,8 @@ public class Client implements Fetchable<Integer> {
     private String passwordMd5;
 
     private String phoneNumber;
+
+    private Set<Customer> customers =  new HashSet<>(); //添加 Client 和 customer 的一对多关系
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -47,5 +52,24 @@ public class Client implements Fetchable<Integer> {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    @OneToMany(cascade = { CascadeType.REFRESH, CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE},
+    mappedBy = "client")//这里配置关系，并且确定关系维护端和被维护端。mappBy表示关系被维护端，只有关系端有权去更新外键。这里还有注意OneToMany默认的加载方式是赖加载。当看到设置关系中最后一个单词是Many，那么该加载默认为懒加载
+    public Set<Customer> getCustomers() {
+        return customers;
+    }
+
+    public void setCustomers(Set<Customer> customers) {
+        this.customers = customers;
+    }
+
+    /**
+     * 该方法用于向customer 中加 customer项
+     * @param customer
+     */
+    public void addCustomer(Customer customer){
+       customer.setClient(this);
+       this.customers.add(customer);
     }
 }

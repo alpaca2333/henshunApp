@@ -43,6 +43,11 @@ public class CommonDao<KeyType, EntityType extends Fetchable<KeyType>>{
         return query.getResultList();
     }
 
+    public boolean customerCreate(String sql){
+        em.createNativeQuery(sql);
+        return true;
+    }
+
     public boolean touch(EntityType entity) {
         try {
             Field field = entityType.getDeclaredField("modifiedAt");

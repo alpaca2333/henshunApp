@@ -1,7 +1,6 @@
 package cn.hengshun.model;
 
 import cn.hengshun.model.dao.IClientDao;
-import cn.hengshun.model.entity.Fetchable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -24,4 +23,6 @@ public class ClientModel {
 
     @Autowired
     private IClientDao clientDao;
+
+
 }

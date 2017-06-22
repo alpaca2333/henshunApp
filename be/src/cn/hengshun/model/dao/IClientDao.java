@@ -1,6 +1,7 @@
 package cn.hengshun.model.dao;
 
 import cn.hengshun.model.entity.Client;
+import cn.hengshun.model.entity.Customer;
 
 import java.util.List;
 
@@ -13,4 +14,6 @@ public interface IClientDao {
     Client save(Client clerk);
 
     List<Client> all();
+
+    void addRelation(Client client, List<Customer> customers);
 }

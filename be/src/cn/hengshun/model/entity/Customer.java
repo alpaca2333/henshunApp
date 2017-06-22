@@ -1,6 +1,7 @@
 package cn.hengshun.model.entity;
 
 import cn.hengshun.model.entity.enums.Gender;
+import cn.hengshun.model.entity.enums.Vip;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -23,7 +24,9 @@ public class Customer implements Fetchable<Integer> {
 
     private String email;
 
-    private Boolean isVip;
+    private Vip isVip;
+
+    private Client client; // 设置customer 与 client 的多对一关系
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -77,12 +80,21 @@ public class Customer implements Fetchable<Integer> {
         this.email = email;
     }
 
-    public Boolean getVip() {
+    public Vip getVip() {
         return isVip;
     }
 
-    public void setVip(Boolean vip) {
+    public void setVip(Vip vip) {
         isVip = vip;
     }
 
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, optional = true)
+    @JoinColumn(name="customer_id")//这里设置JoinColumn 设置了外键的名字，并且customer是关系的维护端
+    public Client getClient() {
+        return client;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
+    }
 }
