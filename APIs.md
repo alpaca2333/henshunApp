@@ -1,5 +1,15 @@
 # 恒顺项目接口说明
+<!-- TOC -->
 
+- [恒顺项目接口说明](#恒顺项目接口说明)
+    - [1. 概述](#1-概述)
+    - [2. 接口列表](#2-接口列表)
+        - [/login GET](#login-get)
+        - [/console GET](#console-get)
+        - [/api/my/customers](#apimycustomers)
+        - [/api/customers/{id}](#apicustomersid)
+
+<!-- /TOC -->
 ## 1. 概述
 所有数据接口都放在 `/api` 下，并且尽量遵循 RESTful 风格。所有页面url规则则不在 `/api` 下。
 
@@ -23,6 +33,23 @@
 描述：登录页面
 
 响应： `login.html`
+
+### /login POST
+
+描述：登录操作
+
+参数：application/json
+
+``` json
+{
+    "username": "123456",
+    "password": "123456"
+}
+```
+
+响应： 登录成功后，返回状态码0，并在session中记录登录信息。
+       用户名不存在，返回状态码1
+       密码错误，返回状态码2
 
 <br/>
 
@@ -72,24 +99,31 @@
         "id": 1,
         "name": "大哥",
         "register": "2015-01-01",     // 成为会员的时间
-        "gender": "male",             // male 或者 female
+        "gender": "男",             // male 或者 female
         "phoneNumber": "15644448888",
-        "pe": [                       // 体检报告列表，最好按时间从近到远排序好
+	    "babies": [
             {
-                "id": 1,
-                "time": "2017-01-01",    // 这份体检报告的录入时间
-                "items": [               // 体检报告项目列表
+                "name": "大哥",
+                "birthday": "2015-01-01",
+                "gender": "女",
+                "pe": [                       // 体检报告列表，最好按时间从近到远排序好
                     {
-                        "title": "肝指标",
-                        "content": "肝功能正常"
+                        "id": 1,
+                        "time": "2017-01-01",    // 这份体检报告的录入时间
+                        "items": [               // 体检报告项目列表
+                            {
+                                "title": "肝指标",
+                                "content": "肝功能正常"
+                            }, 
+                            {
+                                "title": "血常规",
+                                "content": "血XX阳性"
+                            }
+                        ]
                     }, 
-                    {
-                        "title": "血常规",
-                        "content": "血XX阳性"
-                    }
+                    ...
                 ]
-            }, 
-            ...
+            }
         ]
     }
 }

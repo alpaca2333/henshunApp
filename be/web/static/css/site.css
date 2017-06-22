@@ -1,100 +1,3 @@
-.login-panel {
-    width: 400px;
-    height: 300px;
-    margin-left: auto;
-    margin-right: auto;
-    top: 50%;
-    position: relative;
-    -webkit-transform: translateY(-50%);
-    -moz-transform: translateY(-50%);
-    -ms-transform: translateY(-50%);
-    -o-transform: translateY(-50%);
-    transform: translateY(-50%);
-    background-color: rgba(255, 255, 255, 0.3);
-    border-radius: 10px;
-}
-
-.login-panel-heading {
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-    padding-top: 15px;
-    padding-left: 25px;
-    height: 75px;
-}
-
-.login-panel-body {
-    border-bottom-left-radius: 10px;
-    border-bottom-right-radius: 10px;
-    height: 240px;
-}
-
-.form-input-panel {
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
-    background-color: rgba(255, 255, 255, 0.3);
-    padding: 5px;
-}
-
-#username-input, #password-input {
-    margin-left: 25px;
-    margin-right: 25px;
-    height: 40px;
-    color: #dbdbdb;
-}
-
-#username-input::placeholder {
-    color: #bdbdbd;
-}
-
-#password-input {
-    margin-top: 10px;
-}
-
-.input-form {
-    outline: none;
-    border: 0;
-    background-color: rgba(0, 0, 0, 0);
-    top: 50%;
-    transform: translateY(-50%);
-    position: relative;
-    font-size: 15px;
-}
-
-#btn-login {
-    outline: none;
-    border: 0;
-    border-radius: 5px;
-    background-color: rgba(255, 255, 255, 0.3);
-    padding: 5px 10px 5px 10px;
-    margin-top: 20px;
-    margin-left: 25px;
-    margin-right: 25px;
-    width: 350px;
-}
-
-#btn-login:hover {
-    background-color: rgba(255, 255, 255, 0.5);
-}
-
-#btn-login:active {
-    background-color: rgba(255, 255, 255, 0.4);
-}
-
-.login-icon {
-    top: 50%;
-    transform: translateY(-60%);
-    position: relative;
-}
-
-#login-header-label {
-    font-family: DengXian, serif;
-    font-size: 20px;
-    color: white;
-    margin-bottom: 0;
-    margin-left: 15px;
-}
-
 #side-panel {
     position: fixed;
     width: 210px;
@@ -114,13 +17,13 @@
 }
 
 .control-header {
-    height: 64px;
+    height: 81px;
     vertical-align: middle;
 }
 
 #side-header {
     text-align: center;
-    line-height: 64px;
+    line-height: 81px;
     background-color: #373d49;
 }
 
@@ -142,17 +45,17 @@
 }
 
 .nav-list {
-    margin-top: 30px;
+    margin-top: 36px;
     list-style: none;
 }
 
 .nav-item {
     background-color: #30353f;
-    height: 48px;
+    height: 54px;
     text-align: center;
     color: rgba(255, 255, 255, 0.8);
-    line-height: 48px;
-    font-size: 12px;
+    line-height: 54px;
+    font-size: 14px;
     border-left: solid 3px #30353f;
 }
 
@@ -172,15 +75,15 @@
 
 .nav-icon {
     padding-right: 18px;
-    font-size: 12px;
+    font-size: 14px;
 }
 
 #main-body {
     width: 100%;
-    padding: 94px 30px 30px;
+    padding: 117px 30px 30px;
 }
 
-#display-panel {
+.display-panel {
     width: 100%;
     height: 100%;
     background-color: #ffffff;
@@ -188,17 +91,18 @@
     padding: 30px;
 }
 
-#display-title {
+.display-title {
+    display: inline-block;
     padding-left: 24px;
-    border-left: solid #E85B53 4px;
-    font-size: 16px;
+    border-left: solid #E85B53 6px;
+    font-size: 18px;
     color: rgba(0, 0, 0, 0.6);
 }
 
 #data-table {
-    margin-top: 36px;
+    margin-top: 64px;
     text-align: center;
-    font-size: 13px;
+    font-size: 15px;
 }
 
 #data-table thead tr td,
@@ -219,7 +123,7 @@
 }
 
 #data-table tbody tr td .btn.btn-link {
-    font-size: 13px;
+    font-size: 15px;
     color: #E85B53;
     padding: 0 6px;
 }
@@ -238,4 +142,164 @@
     background-color: #f5f5f5;
     border: none;
     outline: none;
+}
+
+.display-info {
+    margin-top: 64px;
+}
+
+.key-value {
+    margin-bottom: 30px;
+}
+
+.key-value .key {
+    color: rgba(0, 0, 0, 0.3);
+    width: 150px;
+    font-size: 14px;
+    display: inline-block;
+}
+
+.key-value .value {
+    color: rgba(0, 0, 0, 0.6);
+    font-size: 14px;
+}
+
+.pe-report-container {
+    margin-left: 150px;
+    margin-top: -18px;
+}
+
+.pe-item {
+    margin-bottom: 10px;
+}
+
+.pe-item .key {
+    width: 80px;
+}
+
+.pe-panel {
+    box-shadow: 0 0 0;
+}
+
+#login-header-side {
+    background-color: #363c48;
+    height: 81px;
+    width: 210px;
+    text-align: center;
+    float: left;
+    line-height: 81px;
+}
+
+#login-header-main {
+    background-color: #ffffff;
+    padding-left: 210px;
+    width: 100%;
+    height: 81px;
+}
+
+#login-panel
+{
+    border-top: solid 4px #E85B53;
+    width: 500px;
+    height: 400px;
+    margin: 0 auto;
+    background-color: #ffffff;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 32px;
+}
+
+.login-title {
+    display: inline-block;
+    font-size: 22px;
+    color: rgba(0, 0, 0, 0.6);
+    font-weight: bold;
+    margin-bottom: 32px;
+}
+
+.login-label {
+    display: inline-block;
+    font-size: 14px;
+    color:rgba(0, 0, 0, 0.3);
+}
+
+.login-control.form-control {
+    border: none;
+    background-color: rgba(0, 0, 0, 0.05);
+    height: 40px;
+    margin-bottom: 24px;
+    padding: 6px;
+    line-height: 28px;
+}
+
+.login-control.form-control.error {
+    border: solid 2px #E85B53;
+    padding: 4px;
+}
+
+
+.login-icon {
+    display: inline-block;
+    height: 20px;
+    width: 20px;
+    margin: 0 4px;
+}
+
+.login-input {
+    height: 28px;
+    background-color: transparent;
+    border: none;
+    outline: none;
+    width: 360px;
+}
+
+#login-button {
+    background-color: #E85B53;
+    color: whitesmoke;
+    border: none;
+    border-radius: 5px;
+    width: 100%;
+    height: 36px;
+    font-size: 14px;
+    outline: none;
+}
+
+#login-button:hover {
+    background-color: #e87c78;
+}
+
+#login-button:active {
+    background-color: #d3514d;
+}
+
+#check-remember {
+    height: 14px;
+    background-color: #E85B53;
+}
+
+#check-remember, #label-remember {
+    vertical-align: middle;
+    margin: 5px 0 5px 0;
+}
+
+#label-remember {
+    font-weight: normal;
+    color: rgba(0, 0, 0, 0.6);
+}
+
+.login-input {
+    font-size: 15px;
+}
+
+#login-body {
+    margin-top: -81px;
+    width: 100%;
+    height: 100%;
+}
+
+.error-tip {
+    color: #E85B53;
+    display: none;
+    margin-left: 8px;
 }

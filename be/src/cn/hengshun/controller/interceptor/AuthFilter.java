@@ -10,6 +10,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * urlPatterns为需要检查的url正则表达式列表。
+ * excludedPatterns为需要排除的url正则表达式。
+ * urlPatterns与excludedPatterns都为空时检查所有url。
+ * 当一者为空时另一个生效。当两者都不为空时，urlPatterns生效。
+ *
  * Created by alpaca on 17-6-3.
  */
 @Component
@@ -29,17 +34,22 @@ public class AuthFilter extends HandlerInterceptorAdapter {
                     return true;
                 }
             }
+            Log.i("authenticating...");
             return handle(request, response, handler);
         } else {
             for (String pattern: urlPatterns) {
                 if (request.getRequestURI().matches(pattern)) {
+                    Log.i("authenticating...");
                     return handle(request, response, handler);
                 }
             }
             return true;
         }
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> 2c355e1a616eadc3204c685aedc4630bd040004b
     }
 
     private boolean handle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {

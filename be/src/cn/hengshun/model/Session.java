@@ -5,6 +5,7 @@ import cn.hengshun.model.entity.Clerk;
 import cn.hengshun.model.entity.Client;
 import cn.hengshun.util.SpringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.context.request.RequestAttributes;
@@ -17,8 +18,10 @@ import javax.servlet.http.HttpSession;
  * Created by alpaca on 17-6-7.
  */
 @Component
+@Scope("prototype")
 public class Session {
 
+<<<<<<< HEAD
 
     public Session() {
         RequestAttributes attribs = RequestContextHolder.getRequestAttributes();
@@ -27,6 +30,10 @@ public class Session {
             this.session = request.getSession(true);
         }
 
+=======
+    public Session(HttpServletRequest request) {
+        this.session = request.getSession(true);
+>>>>>>> 2c355e1a616eadc3204c685aedc4630bd040004b
     }
 
     public void loginAs(ClerkModel clerk) {

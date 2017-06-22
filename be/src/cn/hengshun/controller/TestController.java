@@ -1,15 +1,23 @@
 package cn.hengshun.controller;
 
+
 import cn.hengshun.model.CustomerModel;
 import cn.hengshun.model.entity.enums.Gender;
 import cn.hengshun.model.entity.enums.Vip;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import cn.hengshun.vo.ResultMessage;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+
 import java.sql.Timestamp;
+
+import javax.servlet.http.HttpServletRequest;
+
 
 /**
  * Created by alpaca on 2017/5/9.
@@ -20,6 +28,7 @@ public class TestController {
     public @ResponseBody String response() {
         return "login.html";
     }
+
 
     @RequestMapping("/addCustomer")
     public @ResponseBody String addCustomer(@RequestParam(value="name") String name,
@@ -38,4 +47,15 @@ public class TestController {
 
     @Autowired
     private CustomerModel customerModel;
+
+    @RequestMapping("/console")
+    public String consoleView() {
+        return "console.html";
+    }
+
+    @RequestMapping("/api/customers")
+    public @ResponseBody ResultMessage allCustomers(HttpServletRequest request) {
+        return new ResultMessage();
+    }
+
 }
