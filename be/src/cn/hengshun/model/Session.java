@@ -21,19 +21,9 @@ import javax.servlet.http.HttpSession;
 @Scope("prototype")
 public class Session {
 
-<<<<<<< HEAD
 
-    public Session() {
-        RequestAttributes attribs = RequestContextHolder.getRequestAttributes();
-        if (attribs instanceof NativeWebRequest) {
-            HttpServletRequest request = (HttpServletRequest) ((NativeWebRequest) attribs).getNativeRequest();
-            this.session = request.getSession(true);
-        }
-
-=======
     public Session(HttpServletRequest request) {
         this.session = request.getSession(true);
->>>>>>> 2c355e1a616eadc3204c685aedc4630bd040004b
     }
 
     public void loginAs(ClerkModel clerk) {
