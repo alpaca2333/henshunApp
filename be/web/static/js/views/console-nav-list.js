@@ -9,7 +9,7 @@ import * as React from 'react';
 export class ConsoleNavList extends React.Component {
     constructor(props) {
         super(props);
-        this.state = this.getInitialState();
+        this.state = ConsoleNavList.initialState;
         this.render = this.render.bind(this);
         this.setSelectedIndex = this.setSelectedIndex.bind(this);
     }
@@ -26,10 +26,8 @@ export class ConsoleNavList extends React.Component {
         ]
     };
 
-    getInitialState() {
-        return {
-            selectedIndex: 0
-        }
+    static initialState = {
+        selectedIndex: 0
     };
 
     render() {
@@ -42,6 +40,7 @@ export class ConsoleNavList extends React.Component {
                 this.setState({
                     selectedIndex: i
                 });
+                window.components.consoleFrame.clearBackStack();
             });
             if (nav.navType === 'action' && nav.onclick) {
                 actions.push(nav.onclick);
@@ -53,8 +52,8 @@ export class ConsoleNavList extends React.Component {
             };
             const href = nav.navType === 'link' ? nav.href : null;
             navList.push(
-                <li className={className} key={"nav" + i} onClick={finalAction}>
-                    <a href={nav.href} >
+                <li className={className} key={"nav" + i} onClick={finalAction} ref={'item' + i}>
+                    <a href={href} >
                         {nav.iconSpan}
                         {nav.text}
                     </a>
@@ -72,5 +71,12 @@ export class ConsoleNavList extends React.Component {
         this.setState({
             selectedIndex: index
         });
+    }
+
+    clickItem(index) {
+        const item = this.refs['item' + index];
+        if (item) {
+            item.click();
+        }
     }
 }

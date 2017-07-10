@@ -1,7 +1,6 @@
 /**
  * Created by alpaca on 2017/3/4.
  */
-import * as $ from 'jquery';
 
 export function getStatusString(status) {
     switch (status) {
@@ -46,10 +45,15 @@ Date.prototype.format = function(format){
     return format;
 };
 
-const IMG_danrenjian = '../../../static/img/danrenjian.jpg';
-const IMG_shuangrenjian = '../../../static/img/shuangrenjian.jpg';
-const IMG_dachuangjian = '../../../static/img/dachuangjian.jpg';
+export const typeSelectOptions = [
+    {value: 'admin', label: '系统管理员'},
+    {value: 'clerk', label: '职员'},
+    {value: 'storeOwner', label: '店主'},
+];
 
-module.exports.IMG_danrenjian = IMG_danrenjian;
-module.exports.IMG_shuangrenjian = IMG_shuangrenjian;
-module.exports.IMG_dachuangjian = IMG_dachuangjian;
+export function showAndHide(div, displayMode) {
+    div.style.display = displayMode;
+    setTimeout(() => {
+        div.style.display = "none";
+    }, 5000);
+}
