@@ -1,5 +1,7 @@
 package cn.hengshun.model.entity;
 
+import org.springframework.context.annotation.Lazy;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -54,7 +56,7 @@ public class Client implements Fetchable<Integer> {
         this.phoneNumber = phoneNumber;
     }
 
-    @OneToMany(cascade = { CascadeType.REFRESH, CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE},
+    @OneToMany(targetEntity=Customer.class,cascade=CascadeType.ALL,orphanRemoval=true,fetch=FetchType.EAGER,
     mappedBy = "client")//这里配置关系，并且确定关系维护端和被维护端。mappBy表示关系被维护端，只有关系端有权去更新外键。这里还有注意OneToMany默认的加载方式是赖加载。当看到设置关系中最后一个单词是Many，那么该加载默认为懒加载
     public Set<Customer> getCustomers() {
         return customers;

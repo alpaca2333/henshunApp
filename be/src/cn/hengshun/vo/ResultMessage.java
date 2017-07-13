@@ -1,5 +1,7 @@
 package cn.hengshun.vo;
 
+import java.util.List;
+
 /**
  * Created by alpaca on 17-6-16.
  */
@@ -20,6 +22,7 @@ public class ResultMessage {
         this(0, "");
         this.data = data;
     }
+
 
     public int error;
     public String message;

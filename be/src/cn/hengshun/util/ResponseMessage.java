@@ -3,16 +3,16 @@ package cn.hengshun.util;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 /**
  * Created by 11946 on 2017/6/17.
  */
-@Component
-@Scope("prototype")
 public class ResponseMessage {
 
     private String error;
     private String message;
-    private Object data;
+    private List data;
 
     public String getError() {
         return error;
@@ -34,7 +34,7 @@ public class ResponseMessage {
         return data;
     }
 
-    public void setData(Object data) {
+    public void setData(List data) {
         this.data = data;
     }
 }

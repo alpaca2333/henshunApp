@@ -4,6 +4,8 @@ import cn.hengshun.model.entity.Clerk;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 /**
  * Created by alpaca on 17-6-7.
  */

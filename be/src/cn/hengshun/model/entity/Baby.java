@@ -56,8 +56,8 @@ public class Baby implements Fetchable<Integer> {
         this.gender = gender;
     }
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "parentId")
+    @ManyToOne(cascade=CascadeType.ALL,fetch=FetchType.EAGER,targetEntity=Customer.class)
+    @JoinColumn(name="parent_id")//这里设置JoinColumn 设置了外键的名字，并且customer是关系的维护端
     public Customer getParent() {
         return parent;
     }

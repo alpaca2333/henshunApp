@@ -45,11 +45,6 @@ public class AuthFilter extends HandlerInterceptorAdapter {
             }
             return true;
         }
-<<<<<<< HEAD
-
-
-=======
->>>>>>> 2c355e1a616eadc3204c685aedc4630bd040004b
     }
 
     private boolean handle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {

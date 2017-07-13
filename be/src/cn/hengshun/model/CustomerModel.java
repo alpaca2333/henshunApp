@@ -1,6 +1,7 @@
 package cn.hengshun.model;
 
 import cn.hengshun.model.dao.ICustomerDao;
+import cn.hengshun.model.entity.Baby;
 import cn.hengshun.model.entity.Customer;
 import cn.hengshun.model.entity.enums.Gender;
 import cn.hengshun.model.entity.enums.Vip;
@@ -34,6 +35,8 @@ public class CustomerModel {
             return true;
         }
     }
+
+
 
 
     @Autowired

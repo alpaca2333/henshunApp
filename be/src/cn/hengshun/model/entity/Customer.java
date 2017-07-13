@@ -2,9 +2,14 @@ package cn.hengshun.model.entity;
 
 import cn.hengshun.model.entity.enums.Gender;
 import cn.hengshun.model.entity.enums.Vip;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+import org.springframework.context.annotation.Lazy;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by alpaca on 17-5-27.
@@ -27,6 +32,8 @@ public class Customer implements Fetchable<Integer> {
     private Vip isVip;
 
     private Client client; // 设置customer 与 client 的多对一关系
+
+    private Set<Baby> babys = new HashSet<>(); // 设置 customer 与baby 的一对多关系；
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -88,13 +95,32 @@ public class Customer implements Fetchable<Integer> {
         isVip = vip;
     }
 
-    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, optional = true)
-    @JoinColumn(name="customer_id")//这里设置JoinColumn 设置了外键的名字，并且customer是关系的维护端
+    @ManyToOne(cascade=CascadeType.ALL,fetch=FetchType.EAGER,targetEntity=Client.class)
+    @JoinColumn(name="client_id")//这里设置JoinColumn 设置了外键的名字，并且customer是关系的维护端
     public Client getClient() {
         return client;
     }
 
     public void setClient(Client client) {
         this.client = client;
+    }
+
+    @OneToMany(targetEntity=Baby.class,cascade=CascadeType.ALL,orphanRemoval=true,fetch=FetchType.EAGER,
+            mappedBy = "parent")
+    public Set<Baby> getBabys(){
+        return babys;
+    }
+
+    public void setBabys(Set<Baby> babies){
+        this.babys = babies;
+    }
+
+    /**
+     * 该方法用于向customer 中添加baby
+     * @param baby
+     */
+    public void addBaby(Baby baby){
+        baby.setParent(this);
+        this.babys.add(baby);
     }
 }
