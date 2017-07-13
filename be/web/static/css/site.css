@@ -1,4 +1,20 @@
+* {
+    font-family:"Microsoft YaHei", Arial, Helvetica, sans-serif;
+    font-size: 14px;
+}
+
+button {
+    transition: background 0.25s ease, color 0.1s ease;
+    outline: none;
+}
+
+div {
+    transition: height 0.25s ease-in-out, width 0.25s ease-in-out;
+}
+
+
 #side-panel {
+    z-index: 4;
     position: fixed;
     width: 210px;
     background-color: #30353f;
@@ -17,6 +33,7 @@
 }
 
 .control-header {
+    line-height: 81px;
     height: 81px;
     vertical-align: middle;
 }
@@ -28,8 +45,10 @@
 }
 
 #main-header {
-    z-index: 10;
-    box-shadow: 1px 1px 2px #aaaaaa;
+    z-index: 2;
+    margin-left: -210px;
+    padding-left: 210px;
+    box-shadow: 1px 0px 2px #aaaaaa;
     position: fixed;
     width: 100%;
     background-color: #ffffff;
@@ -96,6 +115,7 @@
     padding-left: 24px;
     border-left: solid #E85B53 6px;
     font-size: 18px;
+    margin-bottom: 36px;
     color: rgba(0, 0, 0, 0.6);
 }
 
@@ -128,6 +148,19 @@
     padding: 0 6px;
 }
 
+.btn-link {
+    color: #E85B53;
+    padding: 2px;
+}
+
+.btn-link:hover {
+    color: #e87c78;
+}
+
+.btn-link:active {
+    color: #d3514d;
+}
+
 #search-group {
     width: 300px;
     float:right;
@@ -145,11 +178,12 @@
 }
 
 .display-info {
-    margin-top: 64px;
+    /*margin-top: 64px;*/
 }
 
 .key-value {
-    margin-bottom: 30px;
+    margin-bottom: 24px;
+    min-height: 30px;
 }
 
 .key-value .key {
@@ -233,7 +267,7 @@
     line-height: 28px;
 }
 
-.login-control.form-control.error {
+.error {
     border: solid 2px #E85B53;
     padding: 4px;
 }
@@ -302,4 +336,241 @@
     color: #E85B53;
     display: none;
     margin-left: 8px;
+    font-size: 14px;
+}
+
+#modal-background {
+    background-color: rgba(0, 0, 0, 0.3);
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 15;
+    display: none;
+    text-align: center;
+    line-height: 100%;
+}
+
+#modal-panel {
+    text-align: left;
+    display: inline-block;
+    border-top: solid 4px #d3514d;
+    background-color: white;
+    position: relative;
+    top: 50%;
+    transform: translateY(-70%);
+    -ms-transform: translateY(-70%);
+    margin: 0 auto;
+    border-radius: 8px;
+    max-height: 500fpx;
+    overflow: auto;
+}
+
+/* 模态框缩放动画 */
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+@keyframes zoomIn {
+    from {
+        transform: scale(0, 0) translateY(-70%);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1, 1) translateY(-70%);
+        opacity: 1;
+    }
+}
+
+@keyframes zoomOut {
+    from {
+        opacity: 1;
+        transform: scale(1, 1) translateY(-70%);
+    }
+    to {
+        opacity: 0;
+        transform: scale(0, 0) translateY(-70%);
+    }
+}
+
+#dialog-body {
+    min-width: 300px;
+    padding-top: 36px;
+    font-size: 14px;
+}
+
+
+.btn-primary {
+    background-color: #E85B53;
+    border: none;
+}
+
+.display-info .btn-primary {
+    height: 36px;
+    width: 120px;
+}
+
+.btn-primary:hover {
+    background-color: #e87c78;
+}
+
+.btn-primary:active {
+    background-color: #d3514d;
+}
+
+.key-value input[type="text"], .key-value input[type="password"] {
+    border: none;
+    outline: none;
+    width: 300px;
+    border-radius: 4px;
+    padding: 4px;
+    font-size: 14px;
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.key-value .select {
+    width: 300px !important;
+    display: inline-flex;
+}
+
+.btn-icon {
+    margin-right: 12px;
+}
+
+.btn-default {
+    border: solid 1px #E85B53 !important;
+    color: #E85B53;
+    background: white;
+}
+
+.btn-default:hover {
+    background: #e8dbda;
+    color: #E85B53;
+}
+
+.display-info .btn-default {
+    height: 36px;
+    width: 120px;
+}
+
+.dialog-footer {
+    text-align: right;
+    margin-top: 36px;
+}
+
+.dialog-footer button {
+    display: inline-block;
+}
+
+.dialog-footer button {
+    width: 100px;
+}
+
+.key-small {
+    width: 80px !important;
+    color: rgba(0, 0, 0, 0.6);
+    font-size: 14px;
+    display: inline-flex;
+}
+
+.required-field::after {
+    color: #ff0000;
+    content: "*";
+    margin-left: 4px;
+}
+
+#dialog-header {
+    border-bottom: solid 1px #dddddd;
+    padding-bottom: 12px;
+}
+
+.backText {
+    font-size: 18px;
+}
+
+.ant-tabs-tabpane .display-title {
+    margin-top: 24px;
+}
+
+.ant-table-body table {
+    text-align: center !important;
+}
+.ant-table-thead > tr > th {
+    text-align: center !important;
+}
+
+.baby-title {
+    display: inline-block;
+    width: 150px;
+    height: 30px;
+    margin-bottom: 36px;
+    font-size: 16px;
+}
+
+.pe-record {
+    margin-bottom: 18px;
+    min-height: 33px;
+    min-width: 360px;
+    line-height: 33px;
+}
+
+.pe-record .key {
+    width: 100px;
+}
+
+.pe-record span.key {
+    color: #bbbbbb;
+}
+
+.pe-record .value {
+    margin-left: 8px;
+    width: 200px;
+}
+
+.pe-record input[type="text"] {
+    border: none;
+    outline: none;
+    border-radius: 4px;
+    padding: 6px;
+    font-size: 14px;
+    height: 30px;
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.pe-record input::placeholder {
+    color: #aaaaaa;
+}
+
+.pe-record button {
+    font-size: 12px;
+    display: none;
+    padding: 5px;
+}
+
+.pe-record span {
+    display: inline-block;
+}
+
+.pe-record:hover button {
+    display: inline;
+}
+
+.pe-panel .panel-heading {
+    padding: 4px 6px;
 }
