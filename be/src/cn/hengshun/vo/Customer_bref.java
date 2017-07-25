@@ -26,6 +26,8 @@ public class Customer_bref {
          this.name = customer.getName();
     }
 
+    public Customer_bref(){}
+
     public String getId() {
         return id;
     }

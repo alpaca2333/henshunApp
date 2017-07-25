@@ -1,7 +1,9 @@
 package cn.hengshun.controller;
 
 import cn.hengshun.model.ClientModel;
+import cn.hengshun.model.CustomerModel;
 import cn.hengshun.model.entity.Customer;
+import cn.hengshun.model.entity.enums.Gender;
 import cn.hengshun.util.JSONUtil;
 import cn.hengshun.util.ResponseMessage;
 import cn.hengshun.vo.Customer_bref;
@@ -12,6 +14,7 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -29,6 +32,9 @@ public class PreController {
 
     @Autowired
     private ClientModel clientModel;
+
+    @Autowired
+    private CustomerModel customerModel;
 
     /**
      * 根据当前登录的门店店主（通过session判断），返回自己所有的顾客列表。
@@ -57,6 +63,25 @@ public class PreController {
     @ResponseBody
     public ResultMessage customerInfo(@RequestParam(value="id") String id){
         return null;
+
+    }
+
+    @RequestMapping("/api/customer", method= RequestMethod.POST)
+    @ResponseBody
+    public ResultMessage createCustomer(Customer_bref customer_bref){
+        Customer customer = new Customer();
+        //todo id? 系统自动分配还是?  register 字段？
+        customer.setName(customer_bref.getName());
+        customer.setGender(customer_bref.getGender().equals("male")? Gender.male:Gender.female);
+        customer.setMobile(customer_bref.getPhoneNumber());
+
+        boolean result = customerModel.addCustomer(customer);
+        if(result){
+            //添加成功
+        }else{
+            //添加失败
+        }
+
 
     }
 }
