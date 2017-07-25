@@ -59,14 +59,14 @@ public class PreController {
      * @param id
      * @return
      */
-    @RequestMapping("/api/customer")
+    @RequestMapping(value = "/api/customer", method = RequestMethod.GET)
     @ResponseBody
     public ResultMessage customerInfo(@RequestParam(value="id") String id){
         return null;
 
     }
 
-    @RequestMapping("/api/customer", method= RequestMethod.POST)
+    @RequestMapping(value = "/api/customer", method= RequestMethod.POST)
     @ResponseBody
     public ResultMessage createCustomer(Customer_bref customer_bref){
         Customer customer = new Customer();
@@ -81,6 +81,8 @@ public class PreController {
         }else{
             //添加失败
         }
+
+        return null;
 
 
     }
