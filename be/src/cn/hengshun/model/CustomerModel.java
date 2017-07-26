@@ -36,6 +36,15 @@ public class CustomerModel {
         }
     }
 
+    public boolean addCustomer(Customer customer){
+        Customer result = customerDao.save(customer);
+        if(result.getId()!=null){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
 
 
 
