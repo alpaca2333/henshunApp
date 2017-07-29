@@ -34,12 +34,12 @@ public class AuthFilter extends HandlerInterceptorAdapter {
                     return true;
                 }
             }
-            Log.i("authenticating...");
+            //Log.i("authenticating...");
             return handle(request, response, handler);
         } else {
             for (String pattern: urlPatterns) {
                 if (request.getRequestURI().matches(pattern)) {
-                    Log.i("authenticating...");
+                    //Log.i("authenticating...");
                     return handle(request, response, handler);
                 }
             }

@@ -4,11 +4,11 @@ import cn.hengshun.model.ClientModel;
 import cn.hengshun.model.entity.Customer;
 import cn.hengshun.vo.Customer_bref;
 import cn.hengshun.vo.ResultMessage;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -17,7 +17,7 @@ import java.util.Set;
  * api接口的测试版本
  * Created by 11946 on 2017/6/27.
  */
-@Controller
+@RestController
 @RequestMapping("/pre/api")
 public class PreController {
 
@@ -52,5 +52,14 @@ public class PreController {
     public ResultMessage customerInfo(@RequestParam(value="id") String id){
         return null;
 
+    }
+
+    @RequestMapping(value = "/api/user", method= RequestMethod.POST)
+    public ResultMessage addUser(@RequestBody String jsonStr){
+        try {
+            JSONObject jsonObject = new JSONObject(jsonStr);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 }
