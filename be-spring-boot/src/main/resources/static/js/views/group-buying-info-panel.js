@@ -2,9 +2,10 @@
  * Created by alpaca on 17-7-15.
  */
 import * as React from 'react';
-import {Table, Input, Row, Col} from 'antd';
+import {Table, Row, Col} from 'antd';
 import {GroupInfoPanel} from './group-info-panel';
 import {GroupCreationPanel} from './group-creation-panel';
+
 export class GroupBuyingInfoPanel extends React.Component {
     constructor(props) {
         super(props);
@@ -167,7 +168,7 @@ export class GroupBuyingInfoPanel extends React.Component {
                     }
                 />
                 <button className="btn btn-primary"
-                    onClick={window.showDialog.bind(this, '新建拼单', <GroupCreationPanel/>)}
+                        onClick={window.showDialog.bind(this, '新建拼单', <GroupCreationPanel/>)}
                 >新建拼单</button>
             </div>
         )

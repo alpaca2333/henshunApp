@@ -20,6 +20,10 @@ export class UserInfoPanel extends React.Component {
         this.cancel = this.cancel.bind(this);
     }
 
+    static defaultProps = {
+        id: 1
+    };
+
     static initialState = {
         id: 1,
         phoneNumber: '15651656873',
@@ -42,10 +46,7 @@ export class UserInfoPanel extends React.Component {
                     </div>
                     <div className="key-value">
                         <span className="key required-field">用户名</span>
-                        <span className="value" ref="valUsername" style={{display: labelState}}>{this.state.username}</span>
-                        <input
-                            type="text" className="form-inline value" ref="inputUsername"
-                            defaultValue={this.state.username} style={{display: inputState}}/>
+                        <span className="value" ref="valUsername" style={{display: 'inline'}}>{this.state.username}</span>
                     </div>
                     <div className="key-value">
                         <span className="key">姓名</span>
@@ -63,20 +64,7 @@ export class UserInfoPanel extends React.Component {
                     </div>
                     <div className="key-value">
                         <span className="key  required-field">身份</span>
-                        <span className="value" ref="valType" style={{display: labelState}}>{UserListPanel.getTypeString(this.state.type)}</span>
-                        <div style={{display: inputState}} ref="typeSelect">
-                            <Select
-                                style={{width: '300px'}} className={'value'} defaultValue={this.state.type}
-                                onChange={(val) => {
-                                    this.refs.inputType.innerText = val;
-                                }}
-                            >
-                                <Option value="admin">系统管理员</Option>
-                                <Option value="clerk">职员</Option>
-                                <Option value="storeOwner">店主</Option>
-                            </Select>
-                            <span style={{display: 'none'}} ref="inputType">{this.state.type}</span>
-                        </div>
+                        <span className="value" ref="valType" style={{display: 'inline'}}>{UserListPanel.getTypeString(this.state.type)}</span>
                     </div>
                     <div className="key-value" style={{display: inputState === 'inline' ? 'block' : inputState}}>
                         <span className="key">密码</span>
@@ -98,11 +86,6 @@ export class UserInfoPanel extends React.Component {
                         style={{display: this.state.state === 'edit' ? 'inline': 'none', marginLeft: '36px'}}
                         onClick={this.cancel}
                     ><span className="glyphicon glyphicon-ban-circle btn-icon"/>取消</button>
-                    <button
-                        className="btn btn-default"
-                        style={{display: this.state.state === 'edit' ? 'none': 'inline', marginLeft: '36px'}}
-                        onClick={this.delete}
-                    ><span className="glyphicon glyphicon-remove btn-icon"/>删除</button>
                 </div>
             </div>
         )
@@ -117,11 +100,8 @@ export class UserInfoPanel extends React.Component {
     save() {
         if (!this.validateInput()) return;
         const id = this.refs.valId.innerText;
-        const username = this.refs.inputUsername.value;
         const name = this.refs.inputName.value;
         const phoneNumber = this.refs.inputPhoneNumber.value;
-        const type = this.refs.inputType.innerText;
-        console.log(this.refs.inputType);
         this.setState({
             username: username,
             name: name,
@@ -164,7 +144,7 @@ export class UserInfoPanel extends React.Component {
     changePassword() {
         window.showDialog(
             '修改密码',
-            <ChangePasswordPanel/>
+            <ChangePasswordPanel requirePassword={true}/>
         )
     }
 

@@ -59,8 +59,9 @@ export function showAndHide(div, displayMode) {
 }
 
 export function addKeyToArray(iterable) {
+    const base = new Date() + 0;
     for (let i in iterable) {
-        iterable[i].key = i;
+        iterable[i].key = base + i + '';
     }
 }
 

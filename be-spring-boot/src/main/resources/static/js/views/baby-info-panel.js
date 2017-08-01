@@ -225,7 +225,15 @@ export class BabyInfoPanel extends React.Component {
                                     }
                                 }
                             />
-                            <button className="btn btn-link">新建报告</button>
+                            <button className="btn btn-link" onClick={() => {
+                                this.state.pe.splice(0, 0, {
+                                    id: '*',
+                                    time: new Date().format('yyyy-MM-dd'),
+                                    items: [],
+                                    editing: false
+                                });
+                                this.forceUpdate();
+                            }}>新建报告</button>
                         </div>
                     </span>
                 </div>

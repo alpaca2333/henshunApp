@@ -3,6 +3,7 @@
  */
 import * as React from 'react';
 import {Table} from 'antd';
+import {addKeyToArray} from "../lib/common";
 
 export class CustomerPaymentPanel extends React.Component {
     constructor(props) {
@@ -116,6 +117,8 @@ export class CustomerPaymentPanel extends React.Component {
                 )
             }
         ];
+
+        addKeyToArray(this.state.orders);
         return (
             <div>
                 <div className="display-title">消费情况</div>

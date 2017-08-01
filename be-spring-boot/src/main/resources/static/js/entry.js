@@ -9,6 +9,7 @@ import {CustomerListPanel} from './views/customer-list-panel';
 import {CustomerInfoPanel} from './views/customer-info-panel';
 import {Dialog} from './views/dialog';
 import {UserListPanel} from './views/user-list-panel';
+import {AdminUserInfoPanel} from './views/admin-user-info-panel';
 import {UserInfoPanel} from './views/user-info-panel';
 import {UserAddPanel} from './views/user-add-panel';
 import {PaymentDetailPanel} from './views/payment-detail-panel';
@@ -19,6 +20,7 @@ import {StoreStatisticPanel} from './views/store-statistic-panel';
 import {CustomerReturnVisitListPanel} from './views/customer-return-visit-list-panel';
 import {AdminStatisticPanel} from './views/admin-statistic-panel';
 import {InfoManagingPanel} from './views/info-managing-panel';
+import {CrowdFundingInfoPanel} from "./views/crowd-funding-info-panel";
 
 window.components = {};
 
@@ -221,9 +223,16 @@ window.renderAdminNavList = () => {
     );
 };
 
-window.renderUserInfoPanel = () => {
+window.renderAdminUserInfoPanel = (userId) => {
     return window.components.userInfoPanel = ReactDOM.render(
-        <UserInfoPanel/>,
+        <AdminUserInfoPanel id={userId}/>,
+        document.getElementById('main-body')
+    );
+};
+
+window.renderUserInfoPanel = (userId) => {
+    return window.components.userInfoPanel = ReactDOM.render(
+        <UserInfoPanel id={userId}/>,
         document.getElementById('main-body')
     );
 };
@@ -282,6 +291,13 @@ window.renderInfoManagingPanel = () => {
         <InfoManagingPanel/>,
         document.getElementById('main-body')
     )
-}
+};
+
+window.renderCrowdFundingInfoPanel = (id) => {
+    ReactDOM.render(
+        <CrowdFundingInfoPanel id={id}/>,
+        document.getElementById('main-body')
+    )
+};
 
 window.initDialog();

@@ -6,6 +6,7 @@
  */
 
 import * as React from 'react';
+import { Menu, Dropdown, Icon } from 'antd';
 
 export class ConsoleFrame extends React.Component {
     constructor(props) {
@@ -17,7 +18,8 @@ export class ConsoleFrame extends React.Component {
     static defaultProps = {
         logoUrl: '../../static/img/hengshun-logo.png',
         updated: () => { }, // only called the first time the element is created.
-        didMount: () => { }
+        didMount: () => { },
+        logoutRedirect: '/login'
     };
 
     static initialState = {
@@ -29,10 +31,27 @@ export class ConsoleFrame extends React.Component {
             //     },
             //     state: {}
             // }
-        ]
+        ],
+        user: {
+            id: 1,
+            username: 123,
+            name: '王女士'
+        }
     };
 
     render() {
+        const userMenu = (
+            <Menu>
+                <Menu.Item key="0">
+                    <button className="btn btn-link" onClick={window.renderUserInfoPanel.bind(this, this.state.user.id)}>个人信息</button>
+                </Menu.Item>
+                <Menu.Divider />
+                <Menu.Item key="1">
+                    <button className="btn btn-link">注销</button>
+                </Menu.Item>
+            </Menu>
+        );
+
         let returnButton = '';
         if (this.state.backStack.length > 0) {
             const backInfo = this.state.backStack[this.state.backStack.length - 1];
@@ -63,7 +82,18 @@ export class ConsoleFrame extends React.Component {
                 <div id="main-panel">
                     <div className="control-header" id="main-header">
                         {returnButton}
-                        <span style={{float: 'right'}}>123</span>
+                        {this.state.user ?
+                            <div style={{float: 'right', marginRight: 30}}>
+                                <Dropdown overlay={userMenu}>
+                                    <a className="ant-dropdown-link" href="#">
+                                        {this.state.user.name} ({this.state.user.username}) <Icon type="down" />
+                                    </a>
+                                </Dropdown>
+                            </div> :
+                            <div style={{float: 'right', marginRight: 30}}>
+                                未登录
+                            </div>
+                        }
                     </div>
                     <div id="main-body">
                     </div>

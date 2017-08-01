@@ -70,7 +70,7 @@ export class UserListPanel extends React.Component {
                                         window.renderUserListPanel();
                                     }
                                 );
-                                window.renderUserInfoPanel();
+                                window.renderAdminUserInfoPanel();
                             }
                         }>查看</button>
                         <button className="btn btn-link" onClick={() => {
@@ -80,7 +80,7 @@ export class UserListPanel extends React.Component {
                                     window.renderUserListPanel();
                                 }
                             );
-                            window.renderUserInfoPanel();
+                            window.renderAdminUserInfoPanel();
                             window.components.userInfoPanel.setState({
                                 state: 'edit'
                             });
