@@ -3,13 +3,12 @@
  */
 import * as React from 'react';
 import {UserListPanel} from './user-list-panel';
-// import Select from 'react-select';
-// import 'react-select/dist/react-select.css';
-import {Select} from 'antd';
+import {Select, message} from 'antd';
 import {ChangePasswordPanel} from './change-password-panel';
 import {YesNoDialog} from './yes-no-dialog';
-// import {typeSelectOptions} from "../lib/common";
-// import $ from 'jquery';
+import request from 'superagent';
+import {apis, showConnectionFailedMessage} from '../lib/common';
+
 
 export class AdminUserInfoPanel extends React.Component {
     constructor(props) {
@@ -18,6 +17,8 @@ export class AdminUserInfoPanel extends React.Component {
         this.edit = this.edit.bind(this);
         this.save = this.save.bind(this);
         this.cancel = this.cancel.bind(this);
+        this.update = this.update.bind(this);
+        this.delete = this.delete.bind(this);
     }
 
     static defaultProps = {
@@ -25,11 +26,13 @@ export class AdminUserInfoPanel extends React.Component {
     };
 
     static initialState = {
-        id: 1,
-        phoneNumber: '15651656873',
-        name: '张小刚',
-        username: 'alpaca',
-        type: 'admin',
+        user: {
+            id: 1,
+            phoneNumber: '15651656873',
+            name: '张小刚',
+            username: 'alpaca',
+            type: 'admin'
+        },
         state: 'display' // display / edit
     };
 
@@ -42,35 +45,35 @@ export class AdminUserInfoPanel extends React.Component {
                 <div className="display-info">
                     <div className="key-value">
                         <span className="key">编号</span>
-                        <span className="value" ref="valId">{this.state.id}</span>
+                        <span className="value" ref="valId">{this.state.user.id}</span>
                     </div>
                     <div className="key-value">
                         <span className="key required-field">用户名</span>
-                        <span className="value" ref="valUsername" style={{display: labelState}}>{this.state.username}</span>
+                        <span className="value" ref="valUsername" style={{display: labelState}}>{this.state.user.username}</span>
                         <input
                             type="text" className="form-inline value" ref="inputUsername"
-                            defaultValue={this.state.username} style={{display: inputState}}/>
+                            defaultValue={this.state.user.username} style={{display: inputState}}/>
                     </div>
                     <div className="key-value">
                         <span className="key">姓名</span>
-                        <span className="value" ref="valName" style={{display: labelState}}>{this.state.name}</span>
+                        <span className="value" ref="valName" style={{display: labelState}}>{this.state.user.name}</span>
                         <input
                             type="text" className="form-inline value" ref="inputName"
-                            defaultValue={this.state.name} style={{display: inputState}}/>
+                            defaultValue={this.state.user.name} style={{display: inputState}}/>
                     </div>
                     <div className="key-value">
                         <span className="key required-field">手机号</span>
-                        <span className="value" ref="valPhoneNumber" style={{display: labelState}}>{this.state.phoneNumber}</span>
+                        <span className="value" ref="valPhoneNumber" style={{display: labelState}}>{this.state.user.phoneNumber}</span>
                         <input
                             type="text" className="form-inline value" ref="inputPhoneNumber"
-                            defaultValue={this.state.phoneNumber} style={{display: inputState}}/>
+                            defaultValue={this.state.user.phoneNumber} style={{display: inputState}}/>
                     </div>
                     <div className="key-value">
                         <span className="key  required-field">身份</span>
-                        <span className="value" ref="valType" style={{display: labelState}}>{UserListPanel.getTypeString(this.state.type)}</span>
+                        <span className="value" ref="valType" style={{display: labelState}}>{UserListPanel.getTypeString(this.state.user.type)}</span>
                         <div style={{display: inputState}} ref="typeSelect">
                             <Select
-                                style={{width: '300px'}} className={'value'} defaultValue={this.state.type}
+                                style={{width: '300px'}} className={'value'} defaultValue={this.state.user.type}
                                 onChange={(val) => {
                                     this.refs.inputType.innerText = val;
                                 }}
@@ -79,7 +82,7 @@ export class AdminUserInfoPanel extends React.Component {
                                 <Option value="clerk">职员</Option>
                                 <Option value="storeOwner">店主</Option>
                             </Select>
-                            <span style={{display: 'none'}} ref="inputType">{this.state.type}</span>
+                            <span style={{display: 'none'}} ref="inputType">{this.state.user.type}</span>
                         </div>
                     </div>
                     <div className="key-value" style={{display: inputState === 'inline' ? 'block' : inputState}}>
@@ -125,13 +128,27 @@ export class AdminUserInfoPanel extends React.Component {
         const name = this.refs.inputName.value;
         const phoneNumber = this.refs.inputPhoneNumber.value;
         const type = this.refs.inputType.innerText;
-        console.log(this.refs.inputType);
-        this.setState({
+        
+        request.post(apis.updateUser(this.props.id)).send({
+            id: this.props.id,
             username: username,
             name: name,
             phoneNumber: phoneNumber,
             type: type,
             state: 'display'
+        }).end((err, resp) => {
+            if (err || resp.error) {
+                showConnectionFailedMessage();
+                message.warning('保存失败');
+                return;
+            }
+            const result = resp.body;
+            if (result.error) {
+                message.warning('发生了错误：' + result.message);
+                return;
+            }
+            this.update();
+            message.success('保存成功');
         });
     }
 
@@ -178,10 +195,45 @@ export class AdminUserInfoPanel extends React.Component {
             <YesNoDialog
                 content="确定要删除这个用户吗？"
                 yesOption={() => {
-                    // 删除操作
+                    request.delete(apis.deleteUser(this.props.id)).end((err, resp) => {
+                        if (err || resp.error) {
+                            showConnectionFailedMessage();
+                            message.warning('删除失败');
+                            return;
+                        }       
+                        const result = resp.body;
+                        if (result.error) {
+                            message.warning('发生了错误：' + result.message);
+                            return;
+                        }
+                        message.success('删除成功');
+                        window.components.consoleFrame.back();
+                    })
                     window.closeDialog();
                 }}
             />
         )
+    }
+
+
+    componentDidMount() {
+        this.update();
+    }
+
+    update() {
+        request.get(apis.getUser(this.props.id)).end((err, resp) => {
+            if (err || resp.error) {
+                showConnectionFailedMessage();
+                return;
+            }
+            const result = resp.body;
+            if (result.error) {
+                message.warning('发生了错误：' + result.message);
+                return;
+            }
+            this.setState({
+                user: result.data
+            })
+        })
     }
 }

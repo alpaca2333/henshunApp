@@ -2,7 +2,9 @@
  * Created by alpaca on 17-6-22.
  */
 import * as React from 'react';
-import {showAndHide} from "../lib/common";
+import {showAndHide, apis, showConnectionFailedMessage} from "../lib/common";
+import {message} from 'antd';
+import request from 'superagent';
 
 export class ChangePasswordPanel extends React.Component {
     constructor(props) {
@@ -10,16 +12,18 @@ export class ChangePasswordPanel extends React.Component {
     }
 
     static defaultProps = {
-        requirePassword:  false
+        requirePassword:  false,
+        userId: 1
     };
 
     render() {
         return (
             <div>
-                <div className="key-value">
+                {this.props.requirePassword ? <div className="key-value">
                     <span className="key-small required-field">原密码</span>
                     <input type="password" className="form-inline" ref="oldPassword"/>
-                </div>
+                </div> : ''}
+                
                 <div className="key-value">
                     <span className="key-small required-field">新密码</span>
                     <input type="password" className="form-inline" ref="password"/>
@@ -33,11 +37,13 @@ export class ChangePasswordPanel extends React.Component {
                     <button
                         className="btn btn-primary"
                         onClick={() => {
-                            if (!this.refs.password.value) {
-                                this.refs.errorTip.innerHTML = '请输入新密码';
-                                showAndHide(this.refs.errorTip, 'inline');
-                                this.refs.password.focus();
-                                return;
+                            if (this.props.requirePassword) {
+                                if (!this.refs.password.value) {
+                                    this.refs.errorTip.innerHTML = '请输入新密码';
+                                    showAndHide(this.refs.errorTip, 'inline');
+                                    this.refs.password.focus();
+                                    return;
+                                }
                             }
                             if (this.refs.password.value.length < 6) {
                                 this.refs.errorTip.innerHTML = '密码长度至少为6位';
@@ -51,8 +57,35 @@ export class ChangePasswordPanel extends React.Component {
                                 this.refs.repeat.focus();
                                 return;
                             }
-                            // TODO:保存密码
-                            window.closeDialog();
+
+                            const sendData = this.props.requirePassword ? {
+                                oldPassword: this.refs.password.value,
+                                newPassword: this.refs.password.value
+                            } : {
+                                newPassword: this.refs.password.value
+                            }
+                            request.put(apis.updatePassword(this.props.userId)).send({
+                                sendData
+                            }).end((err, resp) => {
+                                if (err) {
+                                    showConnectionFailedMessage();
+                                    return;
+                                }
+                                if (resp.error) {
+                                    message.warning('发生了错误：#' + resp.status + resp.error.message);
+                                    return;
+                                }
+                                const result = resp.body;
+                                if (result.error === 1) {
+                                    message.warning('原密码错误。忘记密码请联系系统管理员。');
+                                    return;
+                                } else if (!result.error) {
+                                    message.success('密码修改成功。');
+                                    window.closeDialog();
+                                } else {
+                                    message.warning('发生了未知错误：' + result.message);
+                                }
+                            });
                         }}
                     >确定</button>
                     <button

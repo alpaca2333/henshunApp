@@ -3,13 +3,11 @@
  */
 import * as React from 'react';
 import {UserListPanel} from './user-list-panel';
-// import Select from 'react-select';
-// import 'react-select/dist/react-select.css';
-import {Select} from 'antd';
+import {Select, message} from 'antd';
 import {ChangePasswordPanel} from './change-password-panel';
 import {YesNoDialog} from './yes-no-dialog';
-// import {typeSelectOptions} from "../lib/common";
-// import $ from 'jquery';
+import request from 'superagent';
+import {apis, showConnectionFailedMessage} from '../lib/common';
 
 export class UserInfoPanel extends React.Component {
     constructor(props) {
@@ -18,6 +16,8 @@ export class UserInfoPanel extends React.Component {
         this.edit = this.edit.bind(this);
         this.save = this.save.bind(this);
         this.cancel = this.cancel.bind(this);
+        this.update = this.update.bind(this);
+        this.changePassword = this.changePassword.bind(this);
     }
 
     static defaultProps = {
@@ -25,12 +25,14 @@ export class UserInfoPanel extends React.Component {
     };
 
     static initialState = {
-        id: 1,
-        phoneNumber: '15651656873',
-        name: '张小刚',
-        username: 'alpaca',
-        type: 'admin',
-        state: 'display' // display / edit
+        user: {
+            id: 1,
+            phoneNumber: '15651656873',
+            name: '张小刚',
+            username: 'alpaca',
+            type: 'admin'
+        }, // display / edit
+        state: 'display'
     };
 
     render() {
@@ -42,29 +44,29 @@ export class UserInfoPanel extends React.Component {
                 <div className="display-info">
                     <div className="key-value">
                         <span className="key">编号</span>
-                        <span className="value" ref="valId">{this.state.id}</span>
+                        <span className="value" ref="valId">{this.state.user.id}</span>
                     </div>
                     <div className="key-value">
                         <span className="key required-field">用户名</span>
-                        <span className="value" ref="valUsername" style={{display: 'inline'}}>{this.state.username}</span>
+                        <span className="value" ref="valUsername" style={{display: 'inline'}}>{this.state.user.username}</span>
                     </div>
                     <div className="key-value">
                         <span className="key">姓名</span>
-                        <span className="value" ref="valName" style={{display: labelState}}>{this.state.name}</span>
+                        <span className="value" ref="valName" style={{display: labelState}}>{this.state.user.name}</span>
                         <input
                             type="text" className="form-inline value" ref="inputName"
-                            defaultValue={this.state.name} style={{display: inputState}}/>
+                            defaultValue={this.state.user.name} style={{display: inputState}}/>
                     </div>
                     <div className="key-value">
                         <span className="key required-field">手机号</span>
-                        <span className="value" ref="valPhoneNumber" style={{display: labelState}}>{this.state.phoneNumber}</span>
+                        <span className="value" ref="valPhoneNumber" style={{display: labelState}}>{this.state.user.phoneNumber}</span>
                         <input
                             type="text" className="form-inline value" ref="inputPhoneNumber"
-                            defaultValue={this.state.phoneNumber} style={{display: inputState}}/>
+                            defaultValue={this.state.user.phoneNumber} style={{display: inputState}}/>
                     </div>
                     <div className="key-value">
                         <span className="key  required-field">身份</span>
-                        <span className="value" ref="valType" style={{display: 'inline'}}>{UserListPanel.getTypeString(this.state.type)}</span>
+                        <span className="value" ref="valType" style={{display: 'inline'}}>{UserListPanel.getTypeString(this.state.user.type)}</span>
                     </div>
                     <div className="key-value" style={{display: inputState === 'inline' ? 'block' : inputState}}>
                         <span className="key">密码</span>
@@ -103,12 +105,9 @@ export class UserInfoPanel extends React.Component {
         const name = this.refs.inputName.value;
         const phoneNumber = this.refs.inputPhoneNumber.value;
         this.setState({
-            username: username,
-            name: name,
-            phoneNumber: phoneNumber,
-            type: type,
             state: 'display'
         });
+        this.update();
     }
 
     cancel() {
@@ -117,34 +116,32 @@ export class UserInfoPanel extends React.Component {
             <YesNoDialog
                 content="您还没有保存改动，确定要取消吗？"
                 yesOption={
-                () => {
-                    this.setState({
-                        state: 'display'
-                    });
-                    window.closeDialog();
+                    () => {
+                        this.setState({
+                            state: 'display'
+                        });
+                        window.closeDialog();
+                    }
                 }
-            }
                 noOption={
                 () => {
                     window.closeDialog();
                 }
             }/>
-        )
+        );
     }
 
     validateInput() {
         const id = this.refs.valId.innerText;
-        const username = this.refs.inputUsername.value;
         const name = this.refs.inputName.value;
         const phoneNumber = this.refs.inputPhoneNumber.value;
-        const type = this.refs.inputType.innerText;
         return true;
     }
 
     changePassword() {
         window.showDialog(
             '修改密码',
-            <ChangePasswordPanel requirePassword={true}/>
+            <ChangePasswordPanel requirePassword={true} userId={this.props.id}/>
         )
     }
 
@@ -159,5 +156,22 @@ export class UserInfoPanel extends React.Component {
                 }}
             />
         )
+    }
+
+    update() {
+        request.get(apis.getUser(this.props.id)).end((err, resp) => {
+            if (err || resp.error) {
+                showConnectionFailedMessage();
+                return;
+            }
+            const result = resp.body;
+            if (result.error) {
+                message.warning('发生了错误：' + result.message);
+                return;
+            }
+            this.setState({
+                user: result.data
+            })
+        })
     }
 }

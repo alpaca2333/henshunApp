@@ -5,7 +5,8 @@ import * as React from 'react';
 import {Table, DatePicker, TimePicker, InputNumber} from 'antd';
 import {YesNoDialog} from './yes-no-dialog';
 import {ProductSelect} from './product-select';
-import {addKeyToArray} from "../lib/common";
+import {addKeyToArray, apis} from "../lib/common";
+import request from 'superagent';
 
 export class PaymentDetailPanel extends React.Component {
     constructor(props) {
@@ -240,5 +241,13 @@ export class PaymentDetailPanel extends React.Component {
             this.forceUpdate();
             window.closeDialog();
         }}/>);
+    }
+
+    componentDidMount() {
+        this.update();
+    }
+
+    update() {
+
     }
 }

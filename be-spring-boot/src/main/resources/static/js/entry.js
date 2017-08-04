@@ -2,6 +2,7 @@ import 'babel-polyfill';
 
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
+import {Spin} from 'antd';
 import {LoginPane} from './views/login-panel';
 import {ConsoleFrame} from './views/console-frame';
 import {ConsoleNavList} from './views/console-nav-list';
@@ -21,6 +22,12 @@ import {CustomerReturnVisitListPanel} from './views/customer-return-visit-list-p
 import {AdminStatisticPanel} from './views/admin-statistic-panel';
 import {InfoManagingPanel} from './views/info-managing-panel';
 import {CrowdFundingInfoPanel} from "./views/crowd-funding-info-panel";
+
+ReactDOM.render(
+    <div>
+        <Spin size="large"/>
+    </div>,
+    document.getElementById('body'));
 
 window.components = {};
 

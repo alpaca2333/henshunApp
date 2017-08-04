@@ -1,9 +1,11 @@
 package cn.hengshun.controller;
 
 import cn.hengshun.service.UserService;
+import cn.hengshun.vo.ResultMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.sql.SQLException;
 
@@ -13,25 +15,23 @@ import java.sql.SQLException;
 @Controller
 public class ViewController {
 
-    @Autowired
-    UserService userService;
-
     @RequestMapping("/login")
-    public String loginView() throws SQLException {
+    public String loginView() {
         return "login.html";
     }
 
-    @RequestMapping("/admin")
-    public String adminView() throws SQLException {
-        return "admin.html";
+    @RequestMapping("/console/admin")
+    public String adminView() {
+        return "console-admin.html";
     }
 
     @RequestMapping("/console")
-    public String consoleView() throws SQLException{
+    public String consoleView() {
         return "console.html";
     }
 
-
-
-
+    @RequestMapping("/test")
+    public @ResponseBody ResultMessage test() {
+        return new ResultMessage();
+    }
 }

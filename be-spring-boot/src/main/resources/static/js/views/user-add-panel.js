@@ -3,9 +3,11 @@
  */
 import * as React from 'react';
 import {YesNoDialog} from "./yes-no-dialog";
-import {showAndHide, typeSelectOptions} from "../lib/common";
+import {showAndHide, typeSelectOptions, showConnectionFailedMessage, apis} from "../lib/common";
 import {InfoDialog} from "./info-dialog";
-import {Select} from 'antd';
+import {Select, message} from 'antd';
+import request from 'superagent';
+
 const Option = Select.Option;
 
 export class UserAddPanel extends React.Component {
@@ -82,9 +84,30 @@ export class UserAddPanel extends React.Component {
         const name = this.refs.inputName.value;
         const phoneNumber = this.refs.inputPhoneNumber.value;
         const type = this.refs.inputType.innerText;
-        // 保存用户输入
-        window.showDialog("创建用户", <InfoDialog content="创建用户完成。"/>);
-        window.components.consoleNavList.clickItem(0);
+        
+                
+        request.post(apis.addUser).send({
+            username: username,
+            name: name, 
+            type: type, 
+            phoneNumber: phoneNumber
+        }).end((err, resp) => {
+            if (err) {
+                showConnectionFailedMessage();
+                return;
+            }
+            if (resp.error) {
+                message.warning(resp.error.status + ' ' + resp.error.message);
+                return;
+            }
+            const result = resp.body;
+            if (result.error) {
+                message.warning(result.message);
+                return;
+            }
+            message.success('创建用户成功');
+            window.components.consoleNavList.clickItem(0);
+        })
     }
 
     cancel() {
@@ -139,6 +162,7 @@ export class UserAddPanel extends React.Component {
             this.refs.tipPassword2.focus();
             return false;
         }
+
         return true;
     }
 

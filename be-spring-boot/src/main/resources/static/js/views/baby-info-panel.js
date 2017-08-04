@@ -2,11 +2,12 @@
  * Created by alpaca on 2017/6/25.
  */
 import * as React from 'react';
-import {DatePicker, Select, Table, InputNumber} from 'antd';
+import {DatePicker, Select, Table, InputNumber, message} from 'antd';
 const Option = Select.Option;
 import {YesNoDialog} from "./yes-no-dialog";
 import {PeEditDialog} from "./pe-edit-dialog";
-import {addKeyToArray} from '../lib/common';
+import {addKeyToArray, apis, showConnectionFailedMessage} from '../lib/common';
+import request from '../lib/common';
 import moment from 'moment';
 
 export class BabyInfoPanel extends React.Component {
@@ -15,6 +16,8 @@ export class BabyInfoPanel extends React.Component {
         this.state = BabyInfoPanel.initialState;
         this.edit = this.edit.bind(this);
         this.cancel = this.cancel.bind(this);
+        this.update = this.update.bind(this);
+        this.save = this.save.bind(this);
     }
 
     static defaultProps = {
@@ -22,74 +25,76 @@ export class BabyInfoPanel extends React.Component {
     };
 
     static initialState = {
-        id: 1,
-        name: '小马迹噶',
-        birthday: '2017-01-01',
-        gender: '女',
-        pe: [
-            {
-                id: 1,
-                time: '2017-01-02',
-                items: [
-                    {
-                        title: '身高',
-                        value: 150,
-                        suggestValue: null
-                    },
-                    {
-                        title: '体重',
-                        value: 81,
-                        suggestValue: null
-                    },
-                    {
-                        title: '血钙',
-                        value: 140,
-                        suggestValue: [
-                            135, 150
-                        ]
-                    },
-                    {
-                        title: '锌', 
-                        value: 81,
-                        suggestValue: [
-                            15, 30
-                        ]
-                    }
-                ],
-                editing: false
-            },
-            {
-                id: 2,
-                time: '2017-01-02',
-                items: [
-                    {
-                        title: '身高',
-                        value: 150,
-                        suggestValue: null
-                    },
-                    {
-                        title: '体重',
-                        value: 81,
-                        suggestValue: null
-                    },
-                    {
-                        title: '血钙',
-                        value: 140,
-                        suggestValue: [
-                            135, 150
-                        ]
-                    },
-                    {
-                        title: '锌',
-                        value: 81,
-                        suggestValue: [
-                            15, 30
-                        ]
-                    }
-                ],
-                editing: false
-            },
-        ],
+        baby: {
+            id: 1,
+            name: '小马迹噶',
+            birthday: '2017-01-01',
+            gender: '女',
+            pe: [
+                {
+                    id: 1,
+                    time: '2017-01-02',
+                    items: [
+                        {
+                            title: '身高',
+                            value: 150,
+                            suggestValue: null
+                        },
+                        {
+                            title: '体重',
+                            value: 81,
+                            suggestValue: null
+                        },
+                        {
+                            title: '血钙',
+                            value: 140,
+                            suggestValue: [
+                                135, 150
+                            ]
+                        },
+                        {
+                            title: '锌', 
+                            value: 81,
+                            suggestValue: [
+                                15, 30
+                            ]
+                        }
+                    ],
+                    editing: false
+                },
+                {
+                    id: 2,
+                    time: '2017-01-02',
+                    items: [
+                        {
+                            title: '身高',
+                            value: 150,
+                            suggestValue: null
+                        },
+                        {
+                            title: '体重',
+                            value: 81,
+                            suggestValue: null
+                        },
+                        {
+                            title: '血钙',
+                            value: 140,
+                            suggestValue: [
+                                135, 150
+                            ]
+                        },
+                        {
+                            title: '锌',
+                            value: 81,
+                            suggestValue: [
+                                15, 30
+                            ]
+                        }
+                    ],
+                    editing: false
+                },
+            ]
+        },
         state: 'display'    // display / edit
     };
 
@@ -165,14 +170,14 @@ export class BabyInfoPanel extends React.Component {
             },
         ];
 
-        addKeyToArray(this.state.pe);
+        addKeyToArray(this.state.baby.pe);
 
         return (
             <div>
                 <p className="baby-title">宝宝#{this.props.babyId}</p>
                 <div className="key-value">
                     <span className="key">姓名</span>
-                    <span className="value" style={{display: labelState}}>{this.state.name}</span>
+                    <span className="value" style={{display: labelState}}>{this.state.baby.name}</span>
                     <input
                         type="text" className="form-inline value" ref="inputName"
                         defaultValue={this.state.name} style={{display: inputState}}/>
@@ -180,11 +185,11 @@ export class BabyInfoPanel extends React.Component {
                 </div>
                 <div className="key-value">
                     <span className="key">性别</span>
-                    <span className="value" style={{display: labelState}}>{this.state.gender}</span>
+                    <span className="value" style={{display: labelState}}>{this.state.baby.gender}</span>
                     <div style={{display: inputState}} ref="typeSelect">
                         <Select
                             className="value"
-                            defaultValue={this.state.gender} style={{ width: '300px'}}
+                            defaultValue={this.state.baby.gender} style={{ width: '300px'}}
                             onChange={(val) => {
                                 this.refs.inputGender.innerText = val;
                             }}
@@ -193,18 +198,18 @@ export class BabyInfoPanel extends React.Component {
                             <Option value="female">女</Option>
                         </Select>
                     </div>
-                    <span style={{display: 'none'}} ref="inputGender">{this.state.gender}</span>
+                    <span style={{display: 'none'}} ref="inputGender">{this.state.baby.gender}</span>
                 </div>
                 <div className="key-value">
                     <span className="key">出生日期</span>
-                    <span className="value" style={{display: labelState}}>{this.state.birthday}</span>
+                    <span className="value" style={{display: labelState}}>{this.state.baby.birthday}</span>
                     <DatePicker
                         style={{width: '300px', display: inputState}}
-                        defaultValue={moment(this.state.birthday)}
+                        defaultValue={moment(this.state.baby.birthday)}
                         onChange={(date, dateString) => {
                             this.refs.inputBirthday.innerText = dateString;
                         }}/>
-                    <span style={{display: 'none'}} ref="inputBirthday">{this.state.birthday}</span>
+                    <span style={{display: 'none'}} ref="inputBirthday">{this.state.baby.birthday}</span>
                     <span ref="tip" className="error-tip">出生日期不能为空</span>
                 </div>
                 <div className="key-value">
@@ -213,7 +218,7 @@ export class BabyInfoPanel extends React.Component {
                         <div className="pe-report-container">
                             <Table
                                 columns={peListColumns}
-                                dataSource={this.state.pe}
+                                dataSource={this.state.baby.pe}
                                 size="small"
                                 expandedRowRender={
                                     (row) => {
@@ -226,7 +231,7 @@ export class BabyInfoPanel extends React.Component {
                                 }
                             />
                             <button className="btn btn-link" onClick={() => {
-                                this.state.pe.splice(0, 0, {
+                                this.state.baby.pe.splice(0, 0, {
                                     id: '*',
                                     time: new Date().format('yyyy-MM-dd'),
                                     items: [],
@@ -264,6 +269,34 @@ export class BabyInfoPanel extends React.Component {
         )
     }
 
+    save() {
+        this.state.baby.birthday = this.refs.inputBirthday.innerHTML;
+        this.state.baby.gender = this.refs.inputGender.innerHTML;
+        this.state.baby.name = this.refs.inputName.value;
+        request.put(apis.updateBaby(this.props.babyId)).send({
+            name: this.state.baby.name,
+            birthday: this.state.baby.birthday,
+            gender: this.state.baby.gender
+        }).end((err, resp) => {
+            if (err) {
+                showConnectionFailedMessage();
+                return;
+            }
+            if (resp.error) {
+                message.warning(resp.error.status + ' ' + resp.error.message);
+                return;
+            }
+            const result = resp.body;
+            if (result.error) {
+                message.warning(result.message);
+                return;
+            }
+            message.success('修改成功');
+            this.state.state = 'display';
+            this.update();
+        })
+    }
+
     edit() {
         this.setState({
             state: 'edit'
@@ -291,5 +324,30 @@ export class BabyInfoPanel extends React.Component {
                 }
             />
         )
+    }
+
+    componentDidMount() {
+        this.update();
+    }
+
+    update() {
+        request.get(apis.getBaby(this.props.babyId)).end((err, resp) => {
+            if (err) {
+                showConnectionFailedMessage();
+                return;
+            }
+            if (resp.error) {
+                message.warning(resp.error.status + ' ' + resp.error.message);
+                return;
+            }
+            const result = resp.body;
+            if (result.error) {
+                message.warning(result.message);
+                return;
+            }
+            this.setState({
+                baby: result.data
+            });
+        })
     }
 }

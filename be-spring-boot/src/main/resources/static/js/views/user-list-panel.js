@@ -3,11 +3,16 @@
  */
 import * as React from 'react';
 import {YesNoDialog} from "./yes-no-dialog";
+import request from 'superagent';
+import {apis, filter, showNetworkErrorMessage} from '../lib/common';
+import {Table} from 'antd';
+
 
 export class UserListPanel extends React.Component {
     constructor(props) {
         super(props);
         this.state = UserListPanel.getInitialState();
+        this.delete = this.delete.bind(this);
     }
 
     static defaultProps = {
@@ -27,14 +32,7 @@ export class UserListPanel extends React.Component {
                     type: 'admin', // admin / storeOwner / clerk
                 }
             ],
-            allUsers: [
-                {
-                    id: 1,
-                    name: '马迹噶',
-                    username: 'majiga2333',
-                    type: 'admin', // admin / storeOwner / clerk
-                }
-            ]
+            filter: (e) => true
         }
     };
 
@@ -52,16 +50,33 @@ export class UserListPanel extends React.Component {
     }
 
     render() {
-        const u = [];
-        for (let i in this.state.users) {
-            const user = this.state.users[i];
-            u.push(
-                <tr key={'user' + i}>
-                    <td>{user.id}</td>
-                    <td>{user.name}</td>
-                    <td>{user.username}</td>
-                    <td>{UserListPanel.getTypeString(user.type)}</td>
-                    <td>
+        const columns = [
+            {
+                title: '#',
+                dataIndex: 'id',
+                key: 'id'
+            },
+            {
+                title: '姓名',
+                dataIndex: 'name',
+                key: 'name'
+            },
+            {
+                title: '用户名',
+                dataIndex: 'username',
+                key: 'username'
+            },
+            {
+                title: '账户类型',
+                dataIndex: 'type',
+                key: 'type',
+                render: (e) => UserListPanel.getTypeString(e)
+            },
+            {
+                title: '操作',
+                key: 'operation',
+                render: (e, row) => (
+                    <div>
                         <button className="btn btn-link" onClick={
                             () => {
                                 window.components.consoleFrame.pushBackOperation(
@@ -86,10 +101,11 @@ export class UserListPanel extends React.Component {
                             });
                         }}>编辑</button>
                         <button className="btn btn-link" onClick={this.delete}>删除</button>
-                    </td>
-                </tr>
-            );
-        }
+                    </div>
+                )
+            },
+        ];
+
 
         return (
             <div className="display-panel">
@@ -98,68 +114,73 @@ export class UserListPanel extends React.Component {
                     <span className="input-group-btn">
                         <button className="btn btn-primary"><span className=" glyphicon glyphicon-search"/> </button>
                     </span>
-                    <input type="text" ref="searchText" className="form-control form-inline" placeholder="姓名/用户名/编号"/>
+                    <input type="text" ref="searchText" className="form-control form-inline" placeholder="姓名/用户名/编号" onChange={() => {
+                        this.setState({
+                            filter: (element) => {
+                                for (let q of qs) {
+                                    let match = false;
+                                    for (let field in element) {
+                                        if ((element[field] + '').indexOf(q) > -1) {
+                                            match = true;
+                                            break;
+                                        }
+                                    }
+                                    if (!match) return false;
+                                }
+                                return true;
+                            }
+                        });
+                    }}/>
                 </div>
-                <table className="table" id="data-table">
-                    <thead>
-                    <tr className="table-head">
-                        <td style={{width: '10%'}}>编号</td>
-                        <td style={{width: '10%'}}>用户名</td>
-                        <td style={{width: '10%'}}>姓名</td>
-                        <td style={{width: '10%'}}>身份</td>
-                        <td style={{width: '15%'}}>操作</td>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {u}
-                    </tbody>
-                </table>
+                <Table columns={columns} dataSource={filter(this.state.users, this.state.filter)}/>
             </div>
         )
     }
 
-    componentDidMount() {
-        // 设置当搜索文本框的值发生改变时进行过滤
-        this.refs.searchText.onchange = () => {
-            this.filter(this.refs.searchText.value);
-        };
-    }
-
-    filter(key) {
-        if (key && key.trim()) {
-            const users = [];
-            this.state.allUsers.map(
-                (e, i, all) => {
-                    if ((e.id + '').indexOf(key) !== -1 ||
-                        (e.name + '').indexOf(key) !== -1 ||
-                        (e.username + '').indexOf(key) !== -1 ||
-                        (UserListPanel.getTypeString(e.type) + '').indexOf(key) !== -1
-                    ) {
-                        users.push(e);
-                    }
-                    return null;
-                }, this
-            );
-            this.setState({
-                users: users
-            });
-        } else {
-            this.setState({
-                users: this.state.allUsers
-            });
-        }
-    }
-
-    delete() {
+    delete(id) {
         window.showDialog(
             "删除",
             <YesNoDialog
                 content="确定要删除这个用户吗？"
                 yesOption={() => {
-                    // 删除操作
-                    window.closeDialog();
+                    request.delete(apis.deleteUser(id)).end((err, resp) => {
+                        const result = resp.body;
+                        if (err) {
+                            showNetworkErrorMessage();
+                            window.closeDialog();
+                            return;
+                        }
+                        if (result.error) {
+                            message.waring('发生了错误：' + result.message);
+                        } else {
+                            message.success('删除成功！');
+                        }
+                        this.update();
+                        window.closeDialog();
+                    })
                 }}
             />
         )
+    }
+
+    componentDidMount() {
+        this.update();
+    }
+
+    update() {
+        request.get(apis.getUsers).end((err, resp) => {
+            if (err || resp.error) {
+                showNetworkErrorMessage();
+                this.setState({users: []}); 
+                return;
+            }
+            const result = resp.body;
+            if (result.error) {
+                this.setState({users: []}); 
+                message.waring('发生了错误：' + result.message);
+                return;
+            }
+            this.setState(result.data);
+        })
     }
 }
