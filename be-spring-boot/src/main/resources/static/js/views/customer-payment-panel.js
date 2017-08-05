@@ -4,15 +4,19 @@
 import * as React from 'react';
 import {Table} from 'antd';
 import {addKeyToArray} from "../lib/common";
+import {apis, showConnectionFailedMessage} from '../lib/common';
+import {message} from 'antd';
+import request from 'superagent';
 
 export class CustomerPaymentPanel extends React.Component {
     constructor(props) {
         super(props);
         this.state = CustomerPaymentPanel.initialState;
+        this.update = this.update.bind(this);
     }
 
     static defaultProps = {
-        customer: 1
+        customerId: 1
     };
 
     static initialState = {
@@ -125,5 +129,35 @@ export class CustomerPaymentPanel extends React.Component {
                 <Table columns={columns} dataSource={this.state.orders}/>
             </div>
         )
+    }
+
+    update() {
+        request.get(apis.getCustomerPayments(this.props.customerId)).end((err, resp) => {
+            if (err) {
+                showConnectionFailedMessage();
+                this.setState({
+                    orders: []
+                });
+                return;
+            }
+            if (resp.error) {
+                message.warning(resp.error.status + ' ' + resp.error.message);
+                this.setState({
+                    orders: []
+                });
+                return;
+            }
+            const result = resp.body;
+            if (result.error) {
+                message.warning(result.error +  ' ' + result.message);
+                this.setState({
+                    orders: []
+                });
+                return;
+            }
+            this.setState({
+                orders: result.data
+            })
+        });
     }
 }

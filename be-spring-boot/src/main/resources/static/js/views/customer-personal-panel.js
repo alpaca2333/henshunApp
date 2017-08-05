@@ -5,6 +5,9 @@ import * as React from 'react';
 import {YesNoDialog} from './yes-no-dialog';
 import {Select, Col, Row} from 'antd';
 import {showAndHide} from "../lib/common";
+import {apis, showConnectionFailedMessage} from '../lib/common';
+import {message} from 'antd';
+import request from 'superagent';
 
 const Option = Select.Option;
 
@@ -16,6 +19,7 @@ export class CustomerPersonalPanel extends React.Component {
         this.save = this.save.bind(this);
         this.cancel = this.cancel.bind(this);
         this.validateInput = this.validateInput.bind(this);
+        this.update = this.update.bind(this);
     }
 
     static initialState = {
@@ -217,5 +221,24 @@ export class CustomerPersonalPanel extends React.Component {
     static getGenderChinese(gender) {
         if (gender === 'male') return '男';
         if (gender === 'female') return '女';
+    }
+
+    update() {
+        request.get(apis.getCustomerInfo(this.props.customerId)).end((err, resp) => {
+            if (err) {
+                showConnectionFailedMessage();
+                return;
+            }
+            if (resp.error) {
+                message.warning(resp.error.status + ' ' + resp.error.message);
+                return;
+            }
+            const result = resp.body;
+            if (result.error) {
+                message.warning(result.error +  ' ' + result.message);
+                return;
+            }
+            // TODO: 返回了正确的结果
+        });
     }
 }

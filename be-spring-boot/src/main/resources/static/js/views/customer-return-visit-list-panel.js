@@ -6,10 +6,6 @@ export class CustomerReturnVisitListPanel extends React.Component {
         this.state = CustomerReturnVisitListPanel.initialState;
     }
 
-    static defaultProps = {
-        url: '/api/my/customers'
-    };
-
     static initialState = {
         // 使用网络进行更新用户列表时，应该同时更新customers和allCustomers
         // 筛选数据时更新customers
@@ -102,10 +98,10 @@ export class CustomerReturnVisitListPanel extends React.Component {
             title: '操作',
             dataIndex: 'action',
             key: 'action',
-            render: () => (
+            render: (e, row) => (
                 <div>
                     <button className="btn btn-link" onClick={() => {
-                        window.components.consoleFrame.updated = window.renderCustomerInfoPanel.bind(this, true);
+                        window.components.consoleFrame.updated = window.renderCustomerInfoPanel.bind(this, true, row.id);
                         window.components.consoleFrame.pushBackOperation(
                             '所有顾客',
                             window.renderCustomerReturnVisitListPanel
@@ -113,7 +109,7 @@ export class CustomerReturnVisitListPanel extends React.Component {
                     }}>查看</button>
                     <button className="btn btn-link" onClick={() => {
                         window.components.consoleFrame.updated = () => {
-                            window.renderCustomerInfoPanel(true);
+                            window.renderCustomerInfoPanel(true, row.id);
                             window.components.customerInfoPanel.refs.personalPanel.setState({
                                 state: 'edit'
                             });

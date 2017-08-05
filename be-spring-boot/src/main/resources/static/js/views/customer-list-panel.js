@@ -3,10 +3,14 @@ import request from 'superagent';
 import {Table} from 'antd';
 import {YesNoDialog} from './yes-no-dialog';
 import {addKeyToArray, showAndHide} from "../lib/common";
+import {apis, showConnectionFailedMessage} from '../lib/common';
+import {message} from 'antd';
+
 export class CustomerListPanel extends React.Component {
     constructor(props) {
         super(props);
         this.state = CustomerListPanel.initialState;
+        this.update = this.update.bind(this);
     }
 
     static defaultProps = {
@@ -88,7 +92,7 @@ export class CustomerListPanel extends React.Component {
                 render: (e, row) => (
                     <div>
                         <button className="btn btn-link" onClick={() => {
-                            window.components.consoleFrame.updated = window.renderCustomerInfoPanel;
+                            window.components.consoleFrame.updated = window.renderCustomerInfoPanel.bind(this, false, row.id);
                             window.components.consoleFrame.pushBackOperation(
                                 '所有顾客',
                                 window.renderCustomerListPanel
@@ -96,7 +100,7 @@ export class CustomerListPanel extends React.Component {
                         }}>查看</button>
                         <button className="btn btn-link" onClick={() => {
                             window.components.consoleFrame.updated = () => {
-                                window.renderCustomerInfoPanel();
+                                window.renderCustomerInfoPanel(false, row.id);
                                 window.components.customerInfoPanel.refs.personalPanel.setState({
                                     state: 'edit'
                                 });
@@ -191,5 +195,35 @@ export class CustomerListPanel extends React.Component {
                 >添加顾客</button>
             </div>
         )
+    }
+
+   update() {
+        request.get(apis.getCustomerList).end((err, resp) => {
+            if (err) {
+                showConnectionFailedMessage();
+                this.setState({
+                    customers: []
+                });
+                return;
+            }
+            if (resp.error) {
+                message.warning(resp.error.status + ' ' + resp.error.message);
+                this.setState({
+                    customers: []
+                });
+                return;
+            }
+            const result = resp.body;
+            if (result.error) {
+                message.warning(result.error +  ' ' + result.message);
+                this.setState({
+                    customers: []
+                });
+                return;
+            }
+            this.setState({
+                customers: result.data
+            });
+        });
     }
 }

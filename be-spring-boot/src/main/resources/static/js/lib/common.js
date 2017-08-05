@@ -83,6 +83,7 @@ export function timeLengthStr(seconds) {
 }
 
 module.exports.apis = {
+    logout: '/api/logout',
     getUsers: '/api/users',
     deleteUser: (id) => '/api/users/' + id,
     getUser: (id) =>  '/api/user/' + id,
@@ -90,7 +91,14 @@ module.exports.apis = {
     updatePassword: (userId) => '/api/user/' + userId + '/password',
     addUser: '/api/users',
     getBaby: (babyId) => '/api/baby/' + babyId,
-    updateBaby: (babyId) => '/api/baby/' + babyId
+    updateBaby: (babyId) => '/api/baby/' + babyId,
+    currentUser: '/api/user/current',
+    getAllFundings: '/api/fundings',
+    getFunding: (fundingId) => '/api/funding' + fundingId,
+    getCustomerBabies: (customerId) => '/api/customer/' + customerId + '/babies',
+    getCustomerInfo: (customerId) => '/api/customer/' + customerId,
+    getCustomerList: '/api/my/customers/',
+    getCustomerPayments: (customerId) => '/api/customer/' + customerId + '/payments',
 }
 
 export function showNetworkErrorMessage() {

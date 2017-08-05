@@ -7,6 +7,7 @@ import {CustomerPersonalPanel} from "./customer-personal-panel";
 import {CustomerBabyPanel} from "./customer-baby-panel";
 import {CustomerPaymentPanel} from "./customer-payment-panel";
 import {ReturnVisitPanel} from './return-visit-panel';
+import {apis, showConnectionFailedMessage} from '../lib/common';
 
 const TabPane = Tabs.TabPane;
 
@@ -14,10 +15,12 @@ const TabPane = Tabs.TabPane;
 export class CustomerInfoPanel extends React.Component {
     constructor(props) {
         super(props);
+        this.update = this.update.bind(this);
     }
 
     static defaultProps = {
-        showReturnVisit: false
+        showReturnVisit: false,
+        customerId: 0,
     }
 
     render() {
@@ -25,13 +28,13 @@ export class CustomerInfoPanel extends React.Component {
             <div className="display-panel">
                 <Tabs defaultActiveKey="1" tabBarPosition={'left'}>
                     <TabPane tab="个人" key="1">
-                        <CustomerPersonalPanel ref="personalPanel"/>
+                        <CustomerPersonalPanel ref="personalPanel" customerId={this.props.customerId}/>
                     </TabPane>
                     <TabPane tab="宝宝" key="2">
-                        <CustomerBabyPanel/>
+                        <CustomerBabyPanel customerId={this.props.customerId}/>
                     </TabPane>
                     <TabPane tab="消费" key="3">
-                        <CustomerPaymentPanel/>
+                        <CustomerPaymentPanel customerId={this.props.customerId}/>
                     </TabPane>
                     {
                         this.props.showReturnVisit ? 

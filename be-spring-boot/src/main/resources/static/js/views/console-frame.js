@@ -7,12 +7,15 @@
 
 import * as React from 'react';
 import { Menu, Dropdown, Icon } from 'antd';
+import request from 'superagent';
+import {apis} from '../lib/common';
 
 export class ConsoleFrame extends React.Component {
     constructor(props) {
         super(props);
         this.state = ConsoleFrame.initialState;
         this.updated = this.props.updated.bind(this);
+        this.update = this.update.bind(this);
     }
 
     static defaultProps = {
@@ -47,7 +50,9 @@ export class ConsoleFrame extends React.Component {
                 </Menu.Item>
                 <Menu.Divider />
                 <Menu.Item key="1">
-                    <button className="btn btn-link">注销</button>
+                    <button className="btn btn-link" onClick={() => {
+                        request.get(apis.logout).end(() => {this.update()})
+                    }}>注销</button>
                 </Menu.Item>
             </Menu>
         );
@@ -110,6 +115,7 @@ export class ConsoleFrame extends React.Component {
     }
 
     componentDidMount() {
+        this.update();
         if (typeof this.props.didMount === 'function') {
             this.props.didMount();
         }
@@ -137,4 +143,26 @@ export class ConsoleFrame extends React.Component {
     }
 
     updated() {}
+
+    update() {
+        request.get(apis.currentUser).end((err, resp) => {
+            if (err) {
+                showConnectionFailedMessage();
+                return;
+            }
+            if (resp.error) {
+                message.warning(resp.error.status + ' ' + resp.error.message);
+                return;
+            }
+            const result = resp.body;
+            if (result.error === 1) {
+                this.setState({
+                    user: null
+                })
+            }
+            this.setState({
+                user: result.data
+            })
+        })
+    }
 }

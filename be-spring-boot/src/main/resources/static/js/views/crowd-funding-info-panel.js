@@ -2,13 +2,18 @@
  * Created by alpaca on 2017/7/28.
  */
 import * as React from 'react';
-import {Col, Row, Table} from 'antd';
+import {Col, Row, Table, message} from 'antd';
+import {apis, showConnectionFailedMessage} from '../lib/common';
 
 
 export class CrowdFundingInfoPanel extends React.Component {
     constructor(props) {
         super(props);
         this.state = CrowdFundingInfoPanel.initialState;
+    }
+
+    static defaultProps = {
+        fundingId: 1
     }
 
     static initialState = {
@@ -124,5 +129,25 @@ export class CrowdFundingInfoPanel extends React.Component {
                 <Table columns={columns} dataSource={this.state.members}/>
             </div>
         )
+    }
+
+    update() {
+         request.get(apis.getFunding(this.props.fundingId)).end((err, resp) => {
+            if (err) {
+                showConnectionFailedMessage();
+                return;
+            }
+            if (resp.error) {
+                message.warning(resp.error.status + ' ' + resp.error.message);
+                return;
+            }
+            const result = resp.body;
+            if (result.error) {
+                message.warning(result.error +  ' ' + result.message);
+                return;
+            }
+            this.state = result.data;
+            this.forceUpdate();
+        })
     }
 }

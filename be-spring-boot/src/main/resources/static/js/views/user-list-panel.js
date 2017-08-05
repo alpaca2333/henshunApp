@@ -169,15 +169,17 @@ export class UserListPanel extends React.Component {
 
     update() {
         request.get(apis.getUsers).end((err, resp) => {
-            if (err || resp.error) {
-                showNetworkErrorMessage();
-                this.setState({users: []}); 
+            if (err) {
+                showConnectionFailedMessage();
+                return;
+            }
+            if (resp.error) {
+                message.warning(resp.error.status + ' ' + resp.error.message);
                 return;
             }
             const result = resp.body;
             if (result.error) {
-                this.setState({users: []}); 
-                message.waring('发生了错误：' + result.message);
+                message.warning(result.message);
                 return;
             }
             this.setState(result.data);

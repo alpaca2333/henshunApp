@@ -134,9 +134,9 @@ window.renderCustomerListPanel = () => {
 };
 
 // 渲染顾客详细信息div
-window.renderCustomerInfoPanel = (showReturnVisit) => {
+window.renderCustomerInfoPanel = (showReturnVisit, customerId) => {
     return window.components.customerInfoPanel = ReactDOM.render(
-        <CustomerInfoPanel showReturnVisit={showReturnVisit}/>,
+        <CustomerInfoPanel showReturnVisit={showReturnVisit} customerId={customerId}/>,
         document.getElementById('main-body')
     )
 };

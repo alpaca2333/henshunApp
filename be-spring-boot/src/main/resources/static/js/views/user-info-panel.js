@@ -160,13 +160,17 @@ export class UserInfoPanel extends React.Component {
 
     update() {
         request.get(apis.getUser(this.props.id)).end((err, resp) => {
-            if (err || resp.error) {
+            if (err) {
                 showConnectionFailedMessage();
+                return;
+            }
+            if (resp.error) {
+                message.warning(resp.error.status + ' ' + resp.error.message);
                 return;
             }
             const result = resp.body;
             if (result.error) {
-                message.warning('发生了错误：' + result.message);
+                message.warning(result.message);
                 return;
             }
             this.setState({

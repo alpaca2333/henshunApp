@@ -6,6 +6,7 @@
     - [2. 接口列表](#2-接口列表)
         - [/login GET](#login-get)
         - [/login POST](#login-post)
+        - [/api/logout GET](#apilogout-get)
         - [/console GET](#console-get)
         - [/api/my/customers GET](#apimycustomers-get)
         - [/api/customer/{id} GET](#apicustomerid-get)
@@ -28,6 +29,9 @@
         - [/api/user/{id} PUT](#apiuserid-put)
         - [/api/user/{id}/password PUT](#apiuseridpassword-put)
         - [/api/user/current GET](#apiusercurrent-get)
+        - [/api/fundings GET](#apifundings-get)
+        - [/api/funding/{id} GET](#apifundingid-get)
+        - [/api/customer/{customerId}/payments GET](#apicustomercustomeridpayments-get)
 
 <!-- /TOC -->
 ## 1. 概述
@@ -72,6 +76,12 @@
        密码错误，返回状态码2
 
 <br/>
+
+### /api/logout GET
+
+描述：注销当前登录的用户
+
+响应：一个空消息
 
 ### /console GET
 
@@ -121,6 +131,16 @@
         "register": "2015-01-01",     // 成为会员的时间
         "gender": "男",             // male 或者 female
         "phoneNumber": "15644448888"
+    },
+    "client": {
+        "id": 1,
+        "name": "王女士",
+        "phoneNumber": "15651656873",
+    },
+    "superior": {
+        "id": 1,
+        "name": "张女士",
+        "phoneNumber": "15651656876",
     }
 }
 ```
@@ -566,9 +586,104 @@
 响应：
 ``` json
 {
-    "id": 1,
-    "username": "aplaca",
-    "name": "王女士",
-    "type": "clerk"
+    "error": 0,
+    "message": "",
+    "data": {   // 更新成功后的用户信息
+        "id": 1,
+        "username": "aplaca",
+        "name": "王女士",
+        "type": "clerk"
+    }
+    
+}
+```
+
+### /api/fundings GET
+
+描述：获取所有众筹信息
+
+响应：
+``` json
+{
+    "error": 0,
+    "message": "",
+    "data": [
+        {
+            "id": 1,
+            "name": "新品高钙补品",
+            "description": "新品众筹，七折即可获得新品",
+            "price": 128,
+            "targetNum": 200,       // 众筹的目标人数
+            "currentNum": 90,       // 当前参加的众筹人数
+            "product": {            // 众筹的目标产品信息
+                "id": 1,
+                "name": 123,
+                "price": 190
+            },
+            "time": "2018-01-01 00:00:00",  // 众筹截止时间
+        }
+    ]
+}
+```
+### /api/funding/{id} GET
+
+描述：获取某个众筹的详细信息
+
+响应：
+``` json
+{
+    "error": 0,
+    "message": "",
+    "data": {
+        "id": 1,
+        "name": "新品高钙补品",
+        "description": "新品众筹，七折即可获得新品",
+        "price": 128,
+        "targetNum": 200,       // 众筹的目标人数
+        "currentNum": 90,       // 当前参加的众筹人数
+        "product": {            // 众筹的目标产品信息
+            "id": 1,
+            "name": 123,
+            "price": 190
+        },
+        "time": "2018-01-01 00:00:00",  // 众筹截止时间
+        "members": [        // 当前参加众筹的顾客
+            {
+                "id": 1,
+                "name": "王女士",
+                "phoneNumber": "15651656873",
+                "amount": 1
+            }
+        ]
+    }
+}
+```
+
+### /api/customer/{customerId}/payments GET
+
+描述：获取某个顾客的消费信息列表
+
+响应：
+``` json
+{
+    "error": 0,
+    "message": "",
+    "data": [
+        {
+            "id": 1,
+            "time": "2015-01-01 11:11:11",
+            "sum": 630.5,
+            "products": [
+                {
+                    "id": 1,
+                    "name": "老坛酸菜牛肉面",
+                    "amount": 3,
+                    "price": 5.5
+                },
+                ...
+            ]
+        },
+        ...
+    ]
 }
 ```
