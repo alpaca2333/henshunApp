@@ -13,8 +13,8 @@ import java.util.Set;
  */
 
 @Entity(name = "customer")
-public class Customer implements Fetchable<Integer> {
-    private Integer id;
+public class Customer {
+    private Long id;
 
     private String name;
 
@@ -32,13 +32,31 @@ public class Customer implements Fetchable<Integer> {
 
     private Set<Baby> babys = new HashSet<>(); // 设置 customer 与baby 的一对多关系；
 
+
+    public Customer(Long id, String name, Gender gender, Timestamp birthday, String mobile, String email, Vip isVip, Client client, Set<Baby> babys) {
+        super();
+        this.id = id;
+        this.name = name;
+        this.gender = gender;
+        this.birthday = birthday;
+        this.mobile = mobile;
+        this.email = email;
+        this.isVip = isVip;
+        this.client = client;
+        this.babys = babys;
+    }
+
+    public Customer(){
+
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

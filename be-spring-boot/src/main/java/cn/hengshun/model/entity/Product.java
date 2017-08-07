@@ -9,8 +9,8 @@ import javax.persistence.Id;
  * Created by alpaca on 17-5-28.
  */
 @Entity(name = "product")
-public class Product implements Fetchable<Integer> {
-    private Integer id;
+public class Product {
+    private Long id;
 
     private String name;
 
@@ -18,13 +18,25 @@ public class Product implements Fetchable<Integer> {
 
     private String avatarPath;
 
+    public Product(Long id, String name, String description, String avatarPath) {
+        super();
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.avatarPath = avatarPath;
+    }
+
+    public Product(){
+
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
