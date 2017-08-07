@@ -55,4 +55,14 @@ public class UserServiceImpl implements UserService {
     public ResultMessage updateUser(User user) {
         return null;
     }
+
+    @Override
+    public boolean login(String username, String psw) {
+
+        User userEntity =  userRepository.findByUserName(username);
+        if(userEntity.equals(psw)){
+            return true;
+        }
+        return false;
+    }
 }

@@ -53,8 +53,20 @@ public class FundingServiceImpl implements FundingService {
         funding.setProducts(products);
         funding.setMembers(members);
 
-        
+
 
         return funding;
+    }
+
+    @Override
+    public List<Funding> getAllFundings() {
+
+        List<cn.hengshun.model.entity.Funding> entityList = fundingRepository.findAll();
+        List<Funding> voList = new LinkedList<>();
+        for(cn.hengshun.model.entity.Funding entity : entityList){
+            Funding vo = new Funding(entity);
+            voList.add(vo);
+        }
+        return voList;
     }
 }

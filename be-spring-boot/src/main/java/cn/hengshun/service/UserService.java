@@ -24,4 +24,6 @@ public interface UserService {
 
         public ResultMessage updateUser(User user);
 
+        public boolean login(String username, String psw);
+
 }
