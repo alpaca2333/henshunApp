@@ -2,6 +2,8 @@ package cn.hengshun.model.entity;
 
 import cn.hengshun.model.entity.enums.Gender;
 import cn.hengshun.model.entity.enums.Vip;
+import cn.hengshun.vo.Customer_bref;
+import org.json.JSONObject;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -12,8 +14,11 @@ import java.util.Set;
  * Created by alpaca on 17-5-27.
  */
 
-@Entity(name = "customer")
+@Entity(name = "Customer")
 public class Customer {
+
+    @Id
+    @GeneratedValue
     private Long id;
 
     private String name;
@@ -28,12 +33,9 @@ public class Customer {
 
     private Vip isVip;
 
-    private Client client; // 设置customer 与 client 的多对一关系
-
-    private Set<Baby> babys = new HashSet<>(); // 设置 customer 与baby 的一对多关系；
 
 
-    public Customer(Long id, String name, Gender gender, Timestamp birthday, String mobile, String email, Vip isVip, Client client, Set<Baby> babys) {
+    public Customer(Long id, String name, Gender gender, Timestamp birthday, String mobile, String email, Vip isVip) {
         super();
         this.id = id;
         this.name = name;
@@ -42,16 +44,34 @@ public class Customer {
         this.mobile = mobile;
         this.email = email;
         this.isVip = isVip;
-        this.client = client;
-        this.babys = babys;
+
     }
 
     public Customer(){
 
     }
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    public Customer(Customer_bref customer_bref){
+        if(customer_bref!=null){
+            setName(customer_bref.getName());
+            setMobile(customer_bref.getPhoneNumber());
+            setGender(customer_bref.getGender().equals("male")?Gender.male:Gender.female);
+            //setBirthday();
+            //todo
+
+        }
+    }
+
+    public Customer(JSONObject jsonObject){
+        if(jsonObject!= null ){
+            setName(jsonObject.optString("name"));
+            setMobile(jsonObject.optString("phoneNumber"));
+            setGender(jsonObject.optString("gender").equals("男")?Gender.male : Gender.female);
+            //todo birthday
+        }
+    }
+
+
     public Long getId() {
         return id;
     }
@@ -110,32 +130,5 @@ public class Customer {
         isVip = vip;
     }
 
-    @ManyToOne(cascade= CascadeType.ALL,fetch= FetchType.EAGER,targetEntity=Client.class)
-    @JoinColumn(name="client_id")//这里设置JoinColumn 设置了外键的名字，并且customer是关系的维护端
-    public Client getClient() {
-        return client;
-    }
 
-    public void setClient(Client client) {
-        this.client = client;
-    }
-
-    @OneToMany(targetEntity=Baby.class,cascade= CascadeType.ALL,orphanRemoval=true,fetch= FetchType.EAGER,
-            mappedBy = "parent")
-    public Set<Baby> getBabys(){
-        return babys;
-    }
-
-    public void setBabys(Set<Baby> babies){
-        this.babys = babies;
-    }
-
-    /**
-     * 该方法用于向customer 中添加baby
-     * @param baby
-     */
-    public void addBaby(Baby baby){
-        baby.setParent(this);
-        this.babys.add(baby);
-    }
 }

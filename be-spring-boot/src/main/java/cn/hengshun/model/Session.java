@@ -22,35 +22,35 @@ public class Session {
         this.session = request.getSession(true);
     }
 
-    public void loginAs(ClerkModel clerk) {
-        logout();
-        session.setAttribute("clerk", clerk);
-    }
-
-    public void loginAs(ClientModel client) {
-        logout();
-        session.setAttribute("client", client);
-    }
-
-    public void loginAs(AdminModel admin) {
-        logout();
-        session.setAttribute("admin", admin);
-    }
-
-    public Object getCurrentUser() {
-        Clerk clerk = (Clerk) session.getAttribute("clerk");
-        Client client = (Client) session.getAttribute("client");
-        Admin admin = (Admin) session.getAttribute("admin");
-        if (clerk != null) return SpringUtil.getBean(ClerkModel.class, clerk);
-        if (client != null) return SpringUtil.getBean(ClientModel.class, client);
-        if (admin != null) return SpringUtil.getBean(AdminModel.class, admin);
-        return null;
-    }
-
-    public void logout() {
-        session.removeAttribute("clerk");
-        session.removeAttribute("client");
-    }
+//    public void loginAs(ClerkModel clerk) {
+//        logout();
+//        session.setAttribute("clerk", clerk);
+//    }
+//
+//    public void loginAs(ClientModel client) {
+//        logout();
+//        session.setAttribute("client", client);
+//    }
+//
+//    public void loginAs(AdminModel admin) {
+//        logout();
+//        session.setAttribute("admin", admin);
+//    }
+//
+//    public Object getCurrentUser() {
+//        Clerk clerk = (Clerk) session.getAttribute("clerk");
+//        Client client = (Client) session.getAttribute("client");
+//        Admin admin = (Admin) session.getAttribute("admin");
+//        if (clerk != null) return SpringUtil.getBean(ClerkModel.class, clerk);
+//        if (client != null) return SpringUtil.getBean(ClientModel.class, client);
+//        if (admin != null) return SpringUtil.getBean(AdminModel.class, admin);
+//        return null;
+//    }
+//
+//    public void logout() {
+//        session.removeAttribute("clerk");
+//        session.removeAttribute("client");
+//    }
 
     private HttpSession session;
 }

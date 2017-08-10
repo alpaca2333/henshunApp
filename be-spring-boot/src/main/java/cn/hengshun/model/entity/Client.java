@@ -10,6 +10,9 @@ import java.util.Set;
  */
 @Entity(name = "client")
 public class Client implements Fetchable<Integer> {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     private String username;
@@ -18,10 +21,14 @@ public class Client implements Fetchable<Integer> {
 
     private String phoneNumber;
 
-    private Set<Customer> customers =  new HashSet<>(); //添加 Client 和 customer 的一对多关系
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    public Client(String username, String passwordMd5, String phoneNumber) {
+        super();
+        this.username = username;
+        this.passwordMd5 = passwordMd5;
+        this.phoneNumber = phoneNumber;
+    }
+
     public Integer getId() {
         return id;
     }
@@ -54,22 +61,4 @@ public class Client implements Fetchable<Integer> {
         this.phoneNumber = phoneNumber;
     }
 
-    @OneToMany(targetEntity=Customer.class,cascade= CascadeType.ALL,orphanRemoval=true,fetch= FetchType.EAGER,
-    mappedBy = "client")//这里配置关系，并且确定关系维护端和被维护端。mappBy表示关系被维护端，只有关系端有权去更新外键。这里还有注意OneToMany默认的加载方式是赖加载。当看到设置关系中最后一个单词是Many，那么该加载默认为懒加载
-    public Set<Customer> getCustomers() {
-        return customers;
-    }
-
-    public void setCustomers(Set<Customer> customers) {
-        this.customers = customers;
-    }
-
-    /**
-     * 该方法用于向customer 中加 customer项
-     * @param customer
-     */
-    public void addCustomer(Customer customer){
-       customer.setClient(this);
-       this.customers.add(customer);
-    }
 }

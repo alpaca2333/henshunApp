@@ -1,17 +1,18 @@
 package cn.hengshun.controller;
 
-import cn.hengshun.model.ClientModel;
 import cn.hengshun.model.entity.Customer;
+import cn.hengshun.service.FundingService;
+import cn.hengshun.service.UserService;
 import cn.hengshun.vo.Customer_bref;
+import cn.hengshun.vo.Funding;
 import cn.hengshun.vo.ResultMessage;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.json.JSONString;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * api接口的测试版本
@@ -21,8 +22,38 @@ import java.util.Set;
 @RequestMapping("/pre/api")
 public class PreController {
 
+
     @Autowired
-    private ClientModel clientModel;
+    private FundingService fundingService;
+
+    @Autowired
+    private UserService userService;
+
+
+    @RequestMapping(value="/customer", method=RequestMethod.POST)
+    public ResultMessage createCustomer(@RequestBody String jsonStr) throws JSONException {
+        JSONObject jsonObject = new JSONObject(jsonStr);
+        Customer customer = new Customer(jsonObject);
+        ResultMessage result = userService.addCustomer(customer);
+        return result;
+    }
+
+    @RequestMapping(value="/customer", method=RequestMethod.PUT)
+    public ResultMessage updateCustomer(@RequestBody String jsonStr) throws JSONException{
+        JSONObject jsonObject = new JSONObject(jsonStr);
+        Customer customer = new Customer(jsonObject);
+        customer.setId(jsonObject.optLong("id"));
+        ResultMessage resultMessage = userService.updateCustomer(customer);
+        return resultMessage;
+    }
+
+    @RequestMapping(value="/customer", method=RequestMethod.DELETE)
+    public ResultMessage deleteCustomer(@RequestParam String id){
+        Long queryId = Long.parseLong(id);
+        Customer customer = userService.queryCustomer(queryId);
+        userService.deleteCustomer(customer);
+        return new ResultMessage(null);
+    }
 
     /**
      * 根据当前登录的门店店主（通过session判断），返回自己所有的顾客列表。
@@ -31,14 +62,16 @@ public class PreController {
     @RequestMapping("/my/customers")
     @ResponseBody
     public  ResultMessage myCustomers(@RequestParam(value="clientid") String clientId){
-        Set<Customer> customersList = clientModel.queryCustomerByClientId(clientId);
-        Set<Customer_bref> customer_brefs = new HashSet<>();
-        for(Customer customer : customersList){
-            Customer_bref customer_bref = new Customer_bref(customer);
-            customer_brefs.add(customer_bref);
-        }
-        ResultMessage resultMessage  = new ResultMessage(customer_brefs);
-        return resultMessage;
+//        Set<Customer> customersList = clientModel.queryCustomerByClientId(clientId);
+//        Set<Customer_bref> customer_brefs = new HashSet<>();
+//        for(Customer customer : customersList){
+//            Customer_bref customer_bref = new Customer_bref(customer);
+//            customer_brefs.add(customer_bref);
+//        }
+//        ResultMessage resultMessage  = new ResultMessage(customer_brefs);
+//        return resultMessage;
+
+        return  null;
     }
 
 
@@ -63,5 +96,13 @@ public class PreController {
         }
 
         return null;
+    }
+
+    @RequestMapping(value="/api/funding", method=RequestMethod.GET)
+    public ResultMessage getFunding(@RequestParam String id){
+        Long querryId = Long.parseLong(id);
+        Funding funding = fundingService.getSpecificFunding(querryId);
+        ResultMessage resultMessage = new ResultMessage(funding);
+        return resultMessage;
     }
 }

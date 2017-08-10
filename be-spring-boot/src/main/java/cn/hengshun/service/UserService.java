@@ -1,6 +1,8 @@
 package cn.hengshun.service;
 
+import cn.hengshun.model.entity.Customer;
 import cn.hengshun.model.entity.User;
+import cn.hengshun.vo.Customer_bref;
 import cn.hengshun.vo.ResultMessage;
 import cn.hengshun.vo.UserVO;
 
@@ -18,12 +20,22 @@ public interface UserService {
          * 获取UserList
          * @return
          */
-        public ResultMessage listUser();
+        ResultMessage listUser();
 
-        public ResultMessage deleteUser();
+        ResultMessage deleteUser();
 
-        public ResultMessage updateUser(User user);
+        ResultMessage updateUser(User user);
 
-        public boolean login(String username, String psw);
+        boolean login(String username, String psw);
+
+        ResultMessage addCustomer(Customer customer);
+
+        ResultMessage updateCustomer(Customer customer);
+
+        ResultMessage deleteCustomer(Customer customer);
+
+        Customer queryCustomer(Long id);
+
+
 
 }

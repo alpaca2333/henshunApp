@@ -31,7 +31,7 @@ public class FundingServiceImpl implements FundingService {
     public Funding getSpecificFunding(Long id) {
 
         cn.hengshun.model.entity.Funding fundingEntity = fundingRepository.findOne(id);
-        List<Customer> customerList = fundingMemberRepository.findMemberByFundingId(id);
+        List<Customer> customerList = fundingMemberRepository.customerQuery(id);
         List<Product> productList = fundingProductRepository.findFundingByFundingId(id);
 
 

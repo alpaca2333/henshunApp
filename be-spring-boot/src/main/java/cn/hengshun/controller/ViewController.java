@@ -13,7 +13,7 @@ import java.sql.SQLException;
  * Created by alpaca on 17-6-3.
  */
 @Controller
-public class ViewController {
+public class  ViewController {
 
     @RequestMapping("/login")
     public String loginView() {

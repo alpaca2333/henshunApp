@@ -10,6 +10,9 @@ import java.sql.Timestamp;
  */
 @Entity(name = "baby")
 public class Baby implements Fetchable<Integer> {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     private String name;
@@ -18,10 +21,13 @@ public class Baby implements Fetchable<Integer> {
 
     private Gender gender;
 
-    private Customer parent;
+    public Baby(String name, Timestamp birthday, Gender gender) {
+        super();
+        this.name = name;
+        this.birthday = birthday;
+        this.gender = gender;
+    }
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Integer getId() {
         return id;
     }
@@ -56,13 +62,4 @@ public class Baby implements Fetchable<Integer> {
         this.gender = gender;
     }
 
-    @ManyToOne(cascade= CascadeType.ALL,fetch= FetchType.EAGER,targetEntity=Customer.class)
-    @JoinColumn(name="parent_id")//这里设置JoinColumn 设置了外键的名字，并且customer是关系的维护端
-    public Customer getParent() {
-        return parent;
-    }
-
-    public void setParent(Customer customer) {
-        this.parent = customer;
-    }
 }

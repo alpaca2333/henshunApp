@@ -8,7 +8,7 @@ import javax.persistence.Id;
 /**
  * Created by alpaca on 17-5-28.
  */
-@Entity(name = "product")
+@Entity(name = "Product")
 public class Product {
     private Long id;
 

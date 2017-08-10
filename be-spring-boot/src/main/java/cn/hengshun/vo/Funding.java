@@ -38,12 +38,14 @@ public class Funding {
     }
 
     public Funding(cn.hengshun.model.entity.Funding fundingEntity){
-        this.id = fundingEntity.getId();
-        this.name = fundingEntity.getName();
-        this.description = fundingEntity.getDescription();
-        this.targetNum = fundingEntity.getTargetNum();
-        this.currentNum = fundingEntity.getCurrentNum();
-        this.price = fundingEntity.getPrice();
+        if(fundingEntity != null ) {
+            this.id = fundingEntity.getId();
+            this.name = fundingEntity.getName();
+            this.description = fundingEntity.getDescription();
+            this.targetNum = fundingEntity.getTargetNum();
+            this.currentNum = fundingEntity.getCurrentNum();
+            this.price = fundingEntity.getPrice();
+        }
     }
 
 
