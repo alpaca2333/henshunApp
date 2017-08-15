@@ -1,6 +1,7 @@
 package cn.hengshun.vo;
 
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.Set;
 
 /**
@@ -10,23 +11,23 @@ import java.util.Set;
  */
 public class Pe_detail {
 
-    private int id;
-    private Timestamp time;
+    private Long id;
+    private Date time;
     private Set<Pe_Item> items;
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
-    public Timestamp getTime() {
+    public Date getTime() {
         return time;
     }
 
-    public void setTime(Timestamp time) {
+    public void setTime(Date time) {
         this.time = time;
     }
 

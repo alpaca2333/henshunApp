@@ -8,12 +8,12 @@ import java.sql.Timestamp;
 /**
  * Created by alpaca on 17-5-27.
  */
-@Entity(name = "baby")
-public class Baby implements Fetchable<Integer> {
+@Entity(name = "Baby")
+public class Baby{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     private String name;
 
@@ -28,11 +28,15 @@ public class Baby implements Fetchable<Integer> {
         this.gender = gender;
     }
 
-    public Integer getId() {
+    public Baby(){
+        super();
+    }
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

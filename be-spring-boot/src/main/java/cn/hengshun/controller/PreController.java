@@ -1,8 +1,10 @@
 package cn.hengshun.controller;
 
 import cn.hengshun.model.entity.Customer;
+import cn.hengshun.service.BabyService;
 import cn.hengshun.service.FundingService;
 import cn.hengshun.service.UserService;
+import cn.hengshun.vo.Baby;
 import cn.hengshun.vo.Customer_bref;
 import cn.hengshun.vo.Funding;
 import cn.hengshun.vo.ResultMessage;
@@ -12,6 +14,8 @@ import org.json.JSONString;
 import org.springframework.beans.factory.annotation.Autowired;
 ;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 /**
@@ -28,6 +32,9 @@ public class PreController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private BabyService babyService;
 
 
     @RequestMapping(value="/customer", method=RequestMethod.POST)
@@ -53,6 +60,13 @@ public class PreController {
         Customer customer = userService.queryCustomer(queryId);
         userService.deleteCustomer(customer);
         return new ResultMessage(null);
+    }
+
+    @RequestMapping(value="/customer/{id}/babies ", method=RequestMethod.GET)
+    public ResultMessage getBabiesofCustomer(@PathVariable String id){
+        long queryId  = Long.parseLong(id);
+        List<Baby> babies = babyService.getBabyByCustomer(queryId);
+        return new ResultMessage(babies);
     }
 
     /**
